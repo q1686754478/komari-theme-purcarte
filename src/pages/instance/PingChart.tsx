@@ -323,7 +323,7 @@ const PingChart = memo(({ node, hours }: PingChartProps) => {
                   onCheckedChange={setCutPeak}
                 />
                 <Label htmlFor="peak-shaving">{t("chart.smooth")}</Label>
-                <Tips>
+                <Tips className="nezha-chart-tip" size="18" color="currentColor">
                   <span
                     dangerouslySetInnerHTML={{
                       __html: t("chart.smoothTooltipContent"),
@@ -340,7 +340,7 @@ const PingChart = memo(({ node, hours }: PingChartProps) => {
                 <Label htmlFor="connect-breaks">
                   {t("chart.connectBreaks")}
                 </Label>
-                <Tips>
+                <Tips className="nezha-chart-tip" size="18" color="currentColor">
                   <span
                     dangerouslySetInnerHTML={{
                       __html: t("chart.connectBreaksTooltipContent"),

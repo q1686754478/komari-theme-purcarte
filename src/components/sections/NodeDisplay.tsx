@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { NodeData } from "@/types/node";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useAppConfig } from "@/config";
@@ -6,6 +6,7 @@ import { useLocale } from "@/config/hooks";
 import Instance from "@/pages/instance/Instance";
 import PingChart from "@/pages/instance/PingChart";
 import { X } from "lucide-react";
+import { createPortal } from "react-dom";
 
 interface NodeDetailModalProps {
   node: NodeData;
@@ -15,29 +16,34 @@ interface NodeDetailModalProps {
 export const NodeDetailModal = ({ node, onClose }: NodeDetailModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     setIsOpen(true);
+    closeButtonRef.current?.focus();
   }, []);
 
   const handleClose = () => {
     setIsClosing(true);
     setIsOpen(false);
-    setTimeout(onClose, 300);
+    const closeDelay = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? 0
+      : 440;
+    setTimeout(onClose, closeDelay);
   };
 
   const { pingChartTimeInPreview, enableInstanceDetail, enablePingChart } =
     useAppConfig();
   const { t } = useLocale();
 
-  return (
+  return createPortal(
     <div
-      className={`fixed inset-0 flex items-center justify-center z-50 transition-opacity duration-300 ${
+      className={`nezha-node-detail-modal fixed inset-0 flex items-center justify-center z-50 ${
         isOpen && !isClosing ? "opacity-100" : "opacity-0"
       }`}
       onClick={handleClose}>
       <div
-        className={`purcarte-blur purcarte-surface-popup theme-card-style p-5 w-full max-w-4xl max-h-[80vh] transition-transform duration-300 ${
+        className={`purcarte-blur purcarte-surface-popup theme-card-style p-5 w-full max-w-4xl max-h-[80vh] ${
           isOpen && !isClosing ? "scale-100" : "scale-95"
         }`}
         onClick={(e) => e.stopPropagation()}>
@@ -45,7 +51,7 @@ export const NodeDetailModal = ({ node, onClose }: NodeDetailModalProps) => {
           <h2 className="text-xl font-bold">
             {t("node.details", { name: node.name })}
           </h2>
-          <button onClick={handleClose}>
+          <button ref={closeButtonRef} onClick={handleClose}>
             <X className="h-6 w-6" />
           </button>
         </div>
@@ -67,7 +73,8 @@ export const NodeDetailModal = ({ node, onClose }: NodeDetailModalProps) => {
           </div>
         </ScrollArea>
       </div>
-    </div>
+    </div>,
+    document.querySelector(".radix-themes") ?? document.body
   );
 };
 

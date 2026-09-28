@@ -202,11 +202,11 @@ export const StatsBar = (props: StatsBarProps) => {
     <Card
       surface="panel"
       className={cn(
-        "relative flex items-center text-primary my-4",
+        "nezha-stats-panel relative flex items-center text-primary my-4",
         isMobile ? "text-xs p-2" : "text-sm px-4 min-w-[300px] min-h-[5rem]"
       )}>
       <div
-        className="grid w-full gap-2 text-center items-center py-3"
+        className="nezha-stats-grid grid w-full gap-2 text-center items-center py-3"
         style={{
           gridTemplateColumns: getGridTemplateColumns(),
           gridAutoRows: "min-content",
