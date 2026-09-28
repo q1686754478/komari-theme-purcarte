@@ -364,6 +364,8 @@
 }
 
 [data-visual-preset="nezha"] .nezha-node-grid {
+  width: 100%;
+  max-width: 1127px;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: start;
   gap: 1.5em;
