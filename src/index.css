@@ -1027,7 +1027,7 @@ body:has(.radix-themes.dark)
   display: flex;
   justify-content: flex-start;
   min-width: 0;
-  gap: 0.9em;
+  gap: 0.4em;
 }
 
 [data-visual-preset="nezha"] .nezha-reference-load {
@@ -1071,7 +1071,7 @@ body:has(.radix-themes.dark)
   }
 
   [data-visual-preset="nezha"] .nezha-reference-hardware {
-    gap: 0.8em;
+    gap: 0.35em;
   }
 
   [data-visual-preset="nezha"] .nezha-reference-load {
@@ -1382,7 +1382,7 @@ body:has(.radix-themes.dark)
   }
 
   [data-visual-preset="nezha"] .nezha-reference-hardware {
-    gap: 0.75em;
+    gap: 0.3em;
     font-size: clamp(11px, 3.75vw, 13px);
   }
 
