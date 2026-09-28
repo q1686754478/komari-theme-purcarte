@@ -22,12 +22,12 @@ export const StatChip = memo(
       return (
         <div
           className={cn(
-            "flex shrink-0 bg-transition px-1.5 py-0.5 text-center items-center",
+            "nezha-stat-chip flex shrink-0 bg-transition px-1.5 py-0.5 text-center items-center",
             isLabelVertical ? "" : "flex-col"
           )}>
           <div
             className={cn(
-              "text-xs font-semibold",
+              "nezha-stat-label text-xs font-semibold",
               isMobile ? "" : "tracking-widest"
             )}
             style={
@@ -36,7 +36,7 @@ export const StatChip = memo(
             {label}
           </div>
           <div
-            className={`text-xs font-semibold leading-tight ${
+            className={`nezha-stat-values text-xs font-semibold leading-tight ${
               textLeft ? "text-left" : ""
             }`}>
             {lines.map((line, index) => (
@@ -48,10 +48,13 @@ export const StatChip = memo(
     }
 
     return (
-      <div className="w-full py-1">
+      <div className="nezha-stat-chip w-full py-1">
         <div className="flex flex-col gap-2 items-center">
-          <label>{label}</label>
-          <div className={`font-medium -mt-2 ${textLeft ? "text-left" : ""}`}>
+          <label className="nezha-stat-label">{label}</label>
+          <div
+            className={`nezha-stat-values font-medium -mt-2 ${
+              textLeft ? "text-left" : ""
+            }`}>
             {lines.map((line, index) => (
               <div key={index}>{line}</div>
             ))}
