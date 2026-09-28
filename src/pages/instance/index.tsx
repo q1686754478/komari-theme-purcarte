@@ -181,7 +181,9 @@ const InstancePage = () => {
 
   return (
     <div className="text-card-foreground space-y-4 my-4 fade-in @container">
-      <Card className="flex items-center justify-between p-4 mb-4 text-primary">
+      <Card
+        surface="card"
+        className="flex items-center justify-between p-4 mb-4 text-primary">
         <div className="flex items-center gap-2 min-w-0">
           <Button
             className="flex-shrink-0"
@@ -203,7 +205,7 @@ const InstancePage = () => {
       {enableInstanceDetail && node && <Instance node={node} />}
 
       <div className="flex flex-col items-center w-full space-y-4">
-        <Card className="p-2">
+        <Card surface="card" className="p-2">
           <div className="flex justify-center space-x-2">
             <Button
               variant={chartType === "load" ? "default" : "ghost"}
@@ -221,7 +223,9 @@ const InstancePage = () => {
             )}
           </div>
         </Card>
-        <Card className={`justify-center p-2 ${isMobile ? "w-full" : ""}`}>
+        <Card
+          surface="card"
+          className={`justify-center p-2 ${isMobile ? "w-full" : ""}`}>
           {chartType === "load" ? (
             <div className="flex space-x-2 overflow-x-auto whitespace-nowrap">
               {loadTimeRanges.map((range) => (

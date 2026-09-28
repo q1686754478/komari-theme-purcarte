@@ -1,6 +1,7 @@
 // 配置类型定义
 export interface ConfigOptions {
   isShowConfigEditButtonInLogined: boolean; // 是否在登录时显示配置编辑按钮
+  visualPreset: VisualPreset; // 视觉预设
   mainWidth: number; // 主内容宽度百分比
   backgroundImage: string; // 桌面端背景图片URL
   backgroundImageMobile: string; // 移动端背景图片URL
@@ -8,6 +9,7 @@ export interface ConfigOptions {
   videoBackgroundUrl: string; // 桌面端视频背景URL
   videoBackgroundUrlMobile: string; // 移动端视频背景URL
   backgroundAlignment: string; // 背景对齐方式
+  enableBlur: boolean; // 是否启用磨砂玻璃效果
   blurValue: number; // 磨砂玻璃模糊值
   blurBackgroundColor: string; // 磨砂玻璃背景颜色
   enableTransparentTags: boolean; // 是否启用标签透明背景
@@ -50,22 +52,24 @@ export interface ConfigOptions {
 // 默认配置值
 export const DEFAULT_CONFIG: ConfigOptions = {
   isShowConfigEditButtonInLogined: true,
-  mainWidth: 85,
-  backgroundImage: "/assets/Moonlit-Scenery.webp",
+  visualPreset: "nezha",
+  mainWidth: 80,
+  backgroundImage: "https://s2.loli.net/2023/03/24/NH3vuKOx1jipoBr.webp",
   backgroundImageMobile: "",
   enableVideoBackground: false,
   videoBackgroundUrl: "/assets/LanternRivers_1080p15fps2Mbps3s.mp4",
   videoBackgroundUrlMobile: "",
   backgroundAlignment: "cover,top",
-  blurValue: 10,
+  enableBlur: false,
+  blurValue: 0,
   blurBackgroundColor: "rgba(255, 255, 255, 0.5)|rgba(0, 0, 0, 0.5)",
   enableTransparentTags: true,
   tagDefaultColorList:
     "ruby,gray,gold,bronze,brown,yellow,amber,orange,tomato,red",
-  selectThemeColor: "violet",
+  selectThemeColor: "green",
   enableLocalStorage: true,
   selectedDefaultView: "grid",
-  selectedDefaultAppearance: "system",
+  selectedDefaultAppearance: "light",
   statusCardsVisibility:
     "currentTime:true,currentOnline:true,regionOverview:true,trafficOverview:true,networkSpeed:true",
   selectedHeaderStyle: "fixed",
@@ -75,7 +79,7 @@ export const DEFAULT_CONFIG: ConfigOptions = {
   titleText: "Komari",
   enableSearchButton: true,
   enableAdminButton: true,
-  selectedFooterStyle: "fixed",
+  selectedFooterStyle: "followContent",
   enableJsonRPC2Api: false,
   isShowStatsInHeader: false,
   mergeGroupsWithStats: false,
@@ -97,6 +101,7 @@ export const DEFAULT_CONFIG: ConfigOptions = {
   enableListItemProgressBar: true,
   customTexts: "",
 };
+export type VisualPreset = "purcarte" | "nezha";
 // 定义颜色类型
 export type ColorType =
   | "ruby"

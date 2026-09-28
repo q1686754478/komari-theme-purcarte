@@ -45,7 +45,7 @@ const Tips: React.FC<TipsProps & React.HTMLAttributes<HTMLDivElement>> = ({
               {trigger ?? <Info color={color} size={size} />}
             </div>
           </Dialog.Trigger>
-          <Dialog.Content>
+          <Dialog.Content className="purcarte-surface-popup">
             <div className="flex flex-col gap-2">
               {/* <label className="text-xl font-bold">Tips</label> */}
               <div>{children}</div>
@@ -68,7 +68,7 @@ const Tips: React.FC<TipsProps & React.HTMLAttributes<HTMLDivElement>> = ({
             sideOffset={5}
             onMouseEnter={!isMobile ? () => setIsOpen(true) : undefined}
             onMouseLeave={!isMobile ? () => setIsOpen(false) : undefined}
-            className="purcarte-blur theme-card-style z-50"
+            className="purcarte-blur purcarte-surface-popup theme-card-style z-50"
             style={{
               minWidth: isMobile ? "12rem" : "16rem",
               maxWidth: isMobile ? "80vw" : "16rem",

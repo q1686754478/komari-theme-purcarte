@@ -55,6 +55,7 @@ export const NodeCompact = ({ node, onShowDetails }: NodeCompactProps) => {
 
   return (
     <Card
+      surface="card"
       className={`flex flex-col mx-auto w-full max-w-sm ${
         isOnline
           ? ""
@@ -86,15 +87,15 @@ export const NodeCompact = ({ node, onShowDetails }: NodeCompactProps) => {
         <div className="border-t border-(--accent-4)/50 my-1"></div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
-            <CpuIcon className="size-4 text-blue-600" />
+            <CpuIcon className="purcarte-icon-hardware size-4 text-blue-600" />
             <span>{cpuUsage.toFixed(0)}%</span>
           </div>
           <div className="flex items-center gap-1">
-            <MemoryStickIcon className="size-4 text-green-600" />
+            <MemoryStickIcon className="purcarte-icon-hardware size-4 text-green-600" />
             <span>{memUsage.toFixed(0)}%</span>
           </div>
           <div className="flex items-center gap-1">
-            <HardDriveIcon className="size-4 text-red-600" />
+            <HardDriveIcon className="purcarte-icon-hardware size-4 text-red-600" />
             <span>{diskUsage.toFixed(0)}%</span>
           </div>
           <div className="flex items-center gap-1">
@@ -107,13 +108,17 @@ export const NodeCompact = ({ node, onShowDetails }: NodeCompactProps) => {
             <GaugeIcon className="size-5 text-(--accent-11) mr-2" />
             <div>
               <div>
-                {t("node.uploadPrefix")}{" "}
+                <span className="purcarte-icon-upload">
+                  {t("node.uploadPrefix")}
+                </span>{" "}
                 {stats
                   ? formatBytes(stats.net_out, true)
                   : t("node.notAvailable")}
               </div>
               <div>
-                {t("node.downloadPrefix")}{" "}
+                <span className="purcarte-icon-download">
+                  {t("node.downloadPrefix")}
+                </span>{" "}
                 {stats
                   ? formatBytes(stats.net_in, true)
                   : t("node.notAvailable")}
@@ -124,13 +129,17 @@ export const NodeCompact = ({ node, onShowDetails }: NodeCompactProps) => {
             <ArrowUpDownIcon className="size-5 text-(--accent-11) mr-2" />
             <div>
               <div>
-                {t("node.uploadPrefix")}{" "}
+                <span className="purcarte-icon-upload">
+                  {t("node.uploadPrefix")}
+                </span>{" "}
                 {stats
                   ? formatBytes(stats.net_total_up)
                   : t("node.notAvailable")}
               </div>
               <div>
-                {t("node.downloadPrefix")}{" "}
+                <span className="purcarte-icon-download">
+                  {t("node.downloadPrefix")}
+                </span>{" "}
                 {stats
                   ? formatBytes(stats.net_total_down)
                   : t("node.notAvailable")}

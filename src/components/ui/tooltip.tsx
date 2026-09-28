@@ -28,7 +28,7 @@ export const CustomTooltip = ({
 
   if (active && payload && payload.length) {
     return (
-      <div className="purcarte-blur p-3 theme-card-style max-w-xs">
+      <div className="purcarte-blur purcarte-surface-popup p-3 theme-card-style max-w-xs">
         <p className="text-xs font-medium text-secondary-foreground mb-2">
           {labelFormatter
             ? labelFormatter(label)

@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "test": "tsc -p tsconfig.test.json && esbuild tests/config.test.ts tests/progress.test.ts tests/settings-lifecycle.test.tsx --bundle --platform=node --format=esm --packages=external --jsx=automatic --outdir=.test-dist/tests --alias:@=./src && node --test .test-dist/tests/config.test.js .test-dist/tests/progress.test.js .test-dist/tests/settings-lifecycle.test.js",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -31,6 +32,7 @@
   "devDependencies": {
     "@eslint/js": "^9.32.0",
     "@tailwindcss/vite": "^4.1.11",
+    "@types/jsdom": "27.0.0",
     "@types/node": "^24.2.0",
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
@@ -39,6 +41,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
+    "jsdom": "29.1.1",
     "tailwindcss": "^4.1.11",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.39.0",

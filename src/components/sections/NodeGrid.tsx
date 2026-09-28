@@ -73,6 +73,7 @@ export const NodeGrid = ({
 
   return (
     <Card
+      surface="card"
       className={`flex flex-col mx-auto w-full max-w-sm ${
         isOnline
           ? ""
@@ -105,17 +106,17 @@ export const NodeGrid = ({
         {isShowHWBarInCard && (
           <div className="flex items-center justify-around whitespace-nowrap">
             <div className="flex items-center gap-1">
-              <CpuIcon className="size-4 text-blue-600 flex-shrink-0" />
+              <CpuIcon className="purcarte-icon-hardware size-4 text-blue-600 flex-shrink-0" />
               <span>
                 {node.cpu_cores} {t("node.cores")}
               </span>
             </div>
             <div className="flex items-center gap-1">
-              <MemoryStickIcon className="size-4 text-green-600 flex-shrink-0" />
+              <MemoryStickIcon className="purcarte-icon-hardware size-4 text-green-600 flex-shrink-0" />
               <span>{formatBytes(node.mem_total)}</span>
             </div>
             <div className="flex items-center gap-1">
-              <HardDriveIcon className="size-4 text-red-600 flex-shrink-0" />
+              <HardDriveIcon className="purcarte-icon-hardware size-4 text-red-600 flex-shrink-0" />
               <span>{formatBytes(node.disk_total)}</span>
             </div>
           </div>
@@ -124,7 +125,7 @@ export const NodeGrid = ({
           <div className="flex items-center justify-between">
             <span>{t("node.cpu")}</span>
             <div className="w-3/4 flex items-center gap-2">
-              <ProgressBar value={cpuUsage} />
+              <ProgressBar value={cpuUsage} offline={!isOnline} />
               <span className="w-12 text-right">{cpuUsage.toFixed(0)}%</span>
             </div>
           </div>
@@ -140,7 +141,7 @@ export const NodeGrid = ({
           <div className="flex items-center justify-between">
             <span>{t("node.mem")}</span>
             <div className="w-3/4 flex items-center gap-2">
-              <ProgressBar value={memUsage} />
+              <ProgressBar value={memUsage} offline={!isOnline} />
               <span className="w-12 text-right">{memUsage.toFixed(0)}%</span>
             </div>
           </div>
@@ -162,7 +163,7 @@ export const NodeGrid = ({
             <div className="flex items-center justify-between">
               <span>{t("node.swap")}</span>
               <div className="w-3/4 flex items-center gap-2">
-                <ProgressBar value={swapUsage} />
+                <ProgressBar value={swapUsage} offline={!isOnline} />
                 {node.swap_total > 0 ? (
                   <span className="w-12 text-right">
                     {swapUsage.toFixed(0)}%
@@ -192,7 +193,7 @@ export const NodeGrid = ({
           <div className="flex items-center justify-between">
             <span>{t("node.disk")}</span>
             <div className="w-3/4 flex items-center gap-2">
-              <ProgressBar value={diskUsage} />
+              <ProgressBar value={diskUsage} offline={!isOnline} />
               <span className="w-12 text-right">{diskUsage.toFixed(0)}%</span>
             </div>
           </div>
@@ -214,7 +215,10 @@ export const NodeGrid = ({
             <div className="flex items-center justify-between">
               <span>{t("node.traffic")}</span>
               <div className="w-3/4 flex items-center gap-2">
-                <ProgressBar value={trafficPercentage} />
+                <ProgressBar
+                  value={trafficPercentage}
+                  offline={!isOnline}
+                />
                 <span className="w-12 text-right">
                   {node.traffic_limit !== 0
                     ? `${trafficPercentage.toFixed(0)}%`
@@ -230,13 +234,20 @@ export const NodeGrid = ({
                 )}
               </span>
               <span>
-                {stats
-                  ? `${t("node.uploadPrefix")} ${formatBytes(
-                      stats.net_total_up
-                    )} ${t("node.downloadPrefix")} ${formatBytes(
-                      stats.net_total_down
-                    )}`
-                  : t("node.notAvailable")}
+                {stats ? (
+                  <>
+                    <span className="purcarte-icon-upload">
+                      {t("node.uploadPrefix")}
+                    </span>{" "}
+                    {formatBytes(stats.net_total_up)}{" "}
+                    <span className="purcarte-icon-download">
+                      {t("node.downloadPrefix")}
+                    </span>{" "}
+                    {formatBytes(stats.net_total_down)}
+                  </>
+                ) : (
+                  t("node.notAvailable")
+                )}
               </span>
             </div>
           </div>
@@ -246,13 +257,17 @@ export const NodeGrid = ({
           <span>{t("node.network")}</span>
           <div>
             <span>
-              {t("node.uploadPrefix")}{" "}
+              <span className="purcarte-icon-upload">
+                {t("node.uploadPrefix")}
+              </span>{" "}
               {stats
                 ? formatBytes(stats.net_out, true)
                 : t("node.notAvailable")}
             </span>
             <span className="ml-2">
-              {t("node.downloadPrefix")}{" "}
+              <span className="purcarte-icon-download">
+                {t("node.downloadPrefix")}
+              </span>{" "}
               {stats ? formatBytes(stats.net_in, true) : t("node.notAvailable")}
             </span>
           </div>
@@ -275,13 +290,17 @@ export const NodeGrid = ({
               <div className="w-3/4 text-right">
                 <div>
                   <span>
-                    {t("node.uploadPrefix")}{" "}
+                    <span className="purcarte-icon-upload">
+                      {t("node.uploadPrefix")}
+                    </span>{" "}
                     {stats
                       ? formatBytes(stats.net_total_up)
                       : t("node.notAvailable")}
                   </span>
                   <span className="ml-2">
-                    {t("node.downloadPrefix")}{" "}
+                    <span className="purcarte-icon-download">
+                      {t("node.downloadPrefix")}
+                    </span>{" "}
                     {stats
                       ? formatBytes(stats.net_total_down)
                       : t("node.notAvailable")}

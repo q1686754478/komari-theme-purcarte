@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "types": ["node", "jsdom"],
+    "verbatimModuleSyntax": true
+  },
+  "include": [
+    "tests/**/*.ts",
+    "tests/**/*.tsx",
+    "src/components/settings/SettingsPanel.tsx",
+    "src/config/ConfigContext.ts",
+    "src/config/ConfigProvider.tsx",
+    "src/config/default.ts",
+    "src/config/normalize.ts",
+    "src/config/runtime.ts",
+    "src/utils/progress.ts"
+  ]
+}

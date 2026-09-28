@@ -2,6 +2,7 @@ import { type ReactNode, useCallback, useMemo, useEffect } from "react";
 import { useAppConfig } from "@/config/hooks";
 import { useIsMobile } from "@/hooks/useMobile";
 import { useTheme } from "@/hooks/useTheme";
+import { getBlurCssValue } from "@/config/runtime";
 
 export function DynamicContent({ children }: { children: ReactNode }) {
   const config = useAppConfig();
@@ -38,12 +39,12 @@ export function DynamicContent({ children }: { children: ReactNode }) {
 
   const dynamicStyles = useMemo(() => {
     if (!config) return "";
-    const { mainWidth, blurValue, blurBackgroundColor } = config;
+    const { mainWidth, enableBlur, blurValue, blurBackgroundColor } = config;
     const styles: string[] = [];
 
     styles.push(`--main-width: ${mainWidth}vw;`);
     styles.push(`--body-background-url: url(${imageUrl});`);
-    styles.push(`--purcarte-blur: ${blurValue}px;`);
+    styles.push(`--purcarte-blur: ${getBlurCssValue(enableBlur, blurValue)};`);
 
     const colors = blurBackgroundColor.split("|").map((color) => color.trim());
     if (colors.length >= 2) {
@@ -56,6 +57,18 @@ export function DynamicContent({ children }: { children: ReactNode }) {
 
     return `:root { ${styles.join(" ")} }`;
   }, [config, imageUrl]);
+
+  useEffect(() => {
+    document.documentElement.dataset.visualPreset = config.visualPreset;
+
+    return () => {
+      if (
+        document.documentElement.dataset.visualPreset === config.visualPreset
+      ) {
+        delete document.documentElement.dataset.visualPreset;
+      }
+    };
+  }, [config.visualPreset]);
 
   useEffect(() => {
     const imageBackground = document.getElementById("image-background");
@@ -92,7 +105,9 @@ export function DynamicContent({ children }: { children: ReactNode }) {
   return (
     <>
       <style>{dynamicStyles}</style>
-      <div className="fade-in">{children}</div>
+      <div className="fade-in" data-visual-preset={config.visualPreset}>
+        {children}
+      </div>
     </>
   );
 }

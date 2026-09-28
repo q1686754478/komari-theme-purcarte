@@ -267,7 +267,7 @@ const PingChart = memo(({ node, hours }: PingChartProps) => {
       )}
 
       {pingHistory?.tasks && pingHistory.tasks.length > 0 && (
-        <Card className="relative">
+        <Card surface="card" className="relative">
           <div className="absolute top-2 right-2">
             <Tips>
               <span
@@ -312,7 +312,7 @@ const PingChart = memo(({ node, hours }: PingChartProps) => {
         </Card>
       )}
 
-      <Card className="flex-grow flex flex-col">
+      <Card surface="card" className="flex-grow flex flex-col">
         <CardHeader>
           <div className="flex justify-between items-center flex-wrap">
             <div className="flex gap-4 flex-wrap">

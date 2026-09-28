@@ -46,7 +46,7 @@ const Instance = memo(({ node }: InstanceProps) => {
   }, [node.swap_total, stats, isOnline, t]);
 
   return (
-    <Card className="h-full">
+    <Card surface="card" className="h-full">
       <CardHeader className="pb-2">
         <CardTitle>{t("instancePage.title")}</CardTitle>
       </CardHeader>
@@ -86,15 +86,20 @@ const Instance = memo(({ node }: InstanceProps) => {
         <InfoItem
           label={t("instancePage.realtimeNetwork")}
           value={
-            stats && isOnline
-              ? `${t("node.uploadPrefix")} ${formatBytes(
-                  stats.net_out,
-                  true
-                )} ${t("node.downloadPrefix")} ${formatBytes(
-                  stats.net_in,
-                  true
-                )}`
-              : t("node.notAvailable")
+            stats && isOnline ? (
+              <>
+                <span className="purcarte-icon-upload">
+                  {t("node.uploadPrefix")}
+                </span>{" "}
+                {formatBytes(stats.net_out, true)}{" "}
+                <span className="purcarte-icon-download">
+                  {t("node.downloadPrefix")}
+                </span>{" "}
+                {formatBytes(stats.net_in, true)}
+              </>
+            ) : (
+              t("node.notAvailable")
+            )
           }
         />
         <InfoItem
@@ -112,13 +117,20 @@ const Instance = memo(({ node }: InstanceProps) => {
               )}
               <div>
                 <p>
-                  {stats && isOnline
-                    ? `${t("node.uploadPrefix")} ${formatBytes(
-                        stats.net_total_up
-                      )} ${t("node.downloadPrefix")} ${formatBytes(
-                        stats.net_total_down
-                      )}`
-                    : t("node.notAvailable")}
+                  {stats && isOnline ? (
+                    <>
+                      <span className="purcarte-icon-upload">
+                        {t("node.uploadPrefix")}
+                      </span>{" "}
+                      {formatBytes(stats.net_total_up)}{" "}
+                      <span className="purcarte-icon-download">
+                        {t("node.downloadPrefix")}
+                      </span>{" "}
+                      {formatBytes(stats.net_total_down)}
+                    </>
+                  ) : (
+                    t("node.notAvailable")
+                  )}
                 </p>
                 <p>
                   {formatTrafficLimit(

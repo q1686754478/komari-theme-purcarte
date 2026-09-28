@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useState, type ReactNode } from "react";
 import { cn } from "@/utils";
 import { useLocale } from "@/config/hooks";
 
@@ -12,7 +12,7 @@ export const StatChip = memo(
     textLeft,
   }: {
     label: string;
-    lines: string[];
+    lines: ReactNode[];
     isLabelVertical?: boolean;
     isInHeader?: boolean;
     isMobile: boolean;
