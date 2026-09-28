@@ -1008,13 +1008,13 @@ body:has(.radix-themes.dark)
 [data-visual-preset="nezha"] .nezha-reference-hardware {
   display: flex;
   justify-content: space-between;
-  gap: 0.45em;
+  gap: 0.25em;
 }
 
 [data-visual-preset="nezha"] .nezha-reference-hardware > span {
-  min-width: 0;
-  flex: 0 1 auto;
-  gap: 0.16em;
+  flex: 0 0 auto;
+  gap: 0.2em;
+  white-space: nowrap;
 }
 
 [data-visual-preset="nezha"] .nezha-reference-traffic svg {
@@ -1046,12 +1046,8 @@ body:has(.radix-themes.dark)
     font-size: 0.82em;
   }
 
-  [data-visual-preset="nezha"] .nezha-reference-hardware {
-    gap: 0.2em;
-  }
-
   [data-visual-preset="nezha"] .nezha-reference-hardware > span {
-    gap: 0.1em;
+    gap: 0.2em;
   }
 
   [data-visual-preset="nezha"] .nezha-reference-hardware .bi {
@@ -1351,7 +1347,7 @@ body:has(.radix-themes.dark)
   }
 
   [data-visual-preset="nezha"] .nezha-reference-hardware {
-    gap: 0.55em;
+    gap: 0.25em;
   }
 
   [data-visual-preset="nezha"] .nezha-reference-popup {
