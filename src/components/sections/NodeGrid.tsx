@@ -240,11 +240,11 @@ export const NodeGrid = ({
               </span>
               <span>
                 <i aria-hidden="true" className="bi bi-memory" />
-                {formatBytes(node.mem_total)}
+                {formatBytes(node.mem_total).replace(/\s+(?=[KMGTPE]?B$)/, "")}
               </span>
               <span>
                 <i aria-hidden="true" className="bi bi-hdd" />
-                {formatBytes(node.disk_total)}
+                {formatBytes(node.disk_total).replace(/\s+(?=[KMGTPE]?B$)/, "")}
               </span>
             </div>
           </div>
