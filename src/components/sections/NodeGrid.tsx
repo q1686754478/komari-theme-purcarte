@@ -59,10 +59,12 @@ const NezhaProgressRow = ({
       <div className="nezha-reference-progress" data-level={level}>
         <div
           className="nezha-reference-progress-fill"
-          style={{ width: `max(${clampedValue}%, 1.8em)` }}>
-          <span>{displayValue ?? `${clampedValue.toFixed(0)}%`}</span>
-        </div>
+          style={{ width: `${clampedValue}%` }}
+        />
       </div>
+      <span className="nezha-reference-progress-value">
+        {displayValue ?? `${clampedValue.toFixed(0)}%`}
+      </span>
     </div>
   );
 };

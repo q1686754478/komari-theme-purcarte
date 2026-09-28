@@ -656,10 +656,18 @@
 [data-visual-preset="nezha"] .nezha-reference-progress-row,
 [data-visual-preset="nezha"] .nezha-reference-detail-row {
   display: grid;
-  grid-template-columns: 3fr 13fr;
   height: 3.3em;
   align-items: center;
   gap: 0;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-progress-row {
+  grid-template-columns: 3fr minmax(0, 10fr) 2.7em;
+  column-gap: 0.45em;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-detail-row {
+  grid-template-columns: 3fr 13fr;
 }
 
 [data-visual-preset="nezha"] .nezha-reference-row-label {
@@ -678,16 +686,18 @@
 }
 
 [data-visual-preset="nezha"] .nezha-reference-progress-fill {
-  display: flex;
   height: 100%;
-  min-width: 1.8em;
-  align-items: center;
-  justify-content: center;
   border-radius: 999px;
-  color: #30353c;
-  font-size: 0.8em;
-  font-weight: 650;
   transition: width 500ms ease;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-progress-value {
+  justify-self: end;
+  color: var(--nezha-text);
+  font-size: 0.82em;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 [data-visual-preset="nezha"]
@@ -1051,7 +1061,12 @@
     font-size: 1em;
   }
 
-  [data-visual-preset="nezha"] .nezha-reference-progress-row,
+  [data-visual-preset="nezha"] .nezha-reference-progress-row {
+    grid-template-columns: 3fr minmax(0, 10fr) 2.7em;
+    column-gap: 0.4em;
+    height: 3.3em;
+  }
+
   [data-visual-preset="nezha"] .nezha-reference-detail-row {
     grid-template-columns: 3fr 13fr;
     height: 3.3em;
