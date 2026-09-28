@@ -152,33 +152,16 @@ export const NodeGrid = ({
           </Link>
           <div className="nezha-reference-info-wrap">
             <button
+              type="button"
               className="nezha-reference-info"
-              onClick={onShowDetails}
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                onShowDetails();
+              }}
               aria-label={t("node.details", { name: node.name })}>
               <FaInfoCircle />
             </button>
-            <div className="nezha-reference-popup" role="tooltip">
-              <div>
-                系统: {node.os} [{node.virtualization || "-"}:{node.arch}]
-              </div>
-              <div>CPU: {node.cpu_name || t("node.notAvailable")}</div>
-              <div>
-                硬盘: {stats ? formatBytes(stats.disk) : "0 B"} / {formatBytes(node.disk_total)}
-              </div>
-              <div>
-                内存: {stats ? formatBytes(stats.ram) : "0 B"} / {formatBytes(node.mem_total)}
-              </div>
-              <div>
-                交换: {stats ? formatBytes(stats.swap) : "0 B"} / {formatBytes(node.swap_total)}
-              </div>
-              <div>
-                流量: ↓ {stats ? formatBytes(stats.net_total_down) : "0 B"} ↑ {stats ? formatBytes(stats.net_total_up) : "0 B"}
-              </div>
-              <div>负载: {load}</div>
-              <div>
-                在线: {isOnline && stats ? formatUptime(stats.uptime) : t("node.offline")}
-              </div>
-            </div>
           </div>
         </CardHeader>
 

@@ -118,7 +118,7 @@ const HomePage: React.FC<HomePageProps> = ({
       )}
 
       {enableGroupedBar && !mergeGroupsWithStats && (
-        <div className="purcarte-surface-panel flex purcarte-blur theme-card-style overflow-auto whitespace-nowrap overflow-x-auto items-center min-w-[300px] text-primary space-x-4 px-4 my-4">
+        <div className="nezha-group-filter purcarte-surface-panel flex purcarte-blur theme-card-style overflow-auto whitespace-nowrap overflow-x-auto items-center min-w-[300px] text-primary space-x-4 px-4 my-4">
           <span>{t("group.name")}</span>
           {groups?.map((group: string) => (
             <Button
