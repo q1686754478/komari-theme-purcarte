@@ -77,7 +77,7 @@ jobs:
           cp -r dist/ theme-package/
 
           # Create zip file with version and commit hash
-          ZIP_NAME="komari-theme-purcarte.zip"
+          ZIP_NAME="komari-theme-lalalademaxiya.zip"
 
           cd theme-package
           zip -r ../${ZIP_NAME} .
