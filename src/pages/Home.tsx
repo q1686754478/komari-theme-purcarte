@@ -60,6 +60,16 @@ const HomePage: React.FC<HomePageProps> = ({
 
   const hasSearchTerm = searchTerm.trim().length > 0;
 
+  const nezhaNodeGroups = filteredNodes.reduce<
+    Array<{ name: string; nodes: (NodeData & { stats?: any })[] }>
+  >((result, node) => {
+    const name = node.group || t("group.all");
+    const existing = result.find((group) => group.name === name);
+    if (existing) existing.nodes.push(node);
+    else result.push({ name, nodes: [node] });
+    return result;
+  }, []);
+
   if (loading) {
     return <Loading text={t("homePage.loadingData")} />;
   }
@@ -125,14 +135,23 @@ const HomePage: React.FC<HomePageProps> = ({
       <div className={cn("space-y-4", viewMode === "table" && "-mx-2 -mb-2")}>
         {filteredNodes.length > 0 ? (
           viewMode === "grid" && visualPreset === "nezha" ? (
-            <section className="nezha-group-panel" aria-label={selectedGroup}>
-              <div className="nezha-group-title">
-                <ChevronDown aria-hidden="true" className="size-4" />
-                <span>{selectedGroup}</span>
-                <span className="nezha-group-count">{filteredNodes.length}</span>
-              </div>
-              <div className="nezha-group-content">{renderContent()}</div>
-            </section>
+            <div className="nezha-accordion-stack">
+              {nezhaNodeGroups.map((group) => (
+                <details className="nezha-accordion" key={group.name} open>
+                  <summary className="nezha-accordion-title">
+                    <ChevronDown aria-hidden="true" />
+                    <span>{group.name}</span>
+                  </summary>
+                  <div className="nezha-accordion-content">
+                    <NodeGridContainer
+                      nodes={group.nodes}
+                      enableSwap={enableSwap}
+                      selectTrafficProgressStyle={selectTrafficProgressStyle}
+                    />
+                  </div>
+                </details>
+              ))}
+            </div>
           ) : (
             renderContent()
           )

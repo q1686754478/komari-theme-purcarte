@@ -174,11 +174,11 @@
 }
 
 :root[data-visual-preset="nezha"] {
-  --surface-nav: rgba(255, 255, 255, 0.92);
-  --surface-panel: rgba(255, 255, 255, 0.94);
-  --surface-card: #fff;
-  --surface-popup: rgba(255, 255, 255, 0.98);
-  --surface-footer: rgba(255, 255, 255, 0.94);
+  --surface-nav: rgba(255, 255, 255, 0.55);
+  --surface-panel: rgba(251, 251, 251, 0.15);
+  --surface-card: rgba(250, 250, 250, 0.64);
+  --surface-popup: rgba(250, 250, 250, 0.92);
+  --surface-footer: rgba(250, 250, 250, 0.64);
   --nezha-text: #000;
   --nezha-secondary: rgba(0, 0, 0, 0.68);
   --nezha-border: rgba(34, 36, 38, 0.15);
@@ -190,9 +190,9 @@
   --nezha-offline: #708090;
   --nezha-green: #21ba45;
   --nezha-red: #db2828;
-  --nezha-radius-panel: 0.28571429rem;
-  --nezha-radius-card: 0.28571429rem;
-  --nezha-radius-popup: 0.28571429rem;
+  --nezha-radius-panel: 0.4rem;
+  --nezha-radius-card: 0.6rem;
+  --nezha-radius-popup: 5px;
   --foreground: var(--nezha-text);
   --card-foreground: var(--nezha-text);
   --popover-foreground: var(--nezha-text);
@@ -223,15 +223,15 @@
 
 [data-visual-preset="nezha"] .purcarte-surface-panel {
   background-color: var(--surface-panel) !important;
-  border: 1px solid var(--nezha-border) !important;
+  border: 0 !important;
   border-radius: var(--nezha-radius-panel) !important;
-  box-shadow: var(--nezha-shadow) !important;
+  box-shadow: none !important;
   color: var(--nezha-text);
 }
 
 [data-visual-preset="nezha"] .purcarte-surface-card {
   background-color: var(--surface-card) !important;
-  border: 1px solid var(--nezha-border) !important;
+  border: 1px solid rgba(255, 255, 255, 0.78) !important;
   border-radius: var(--nezha-radius-card) !important;
   box-shadow: var(--nezha-shadow) !important;
   color: var(--nezha-text);
@@ -317,8 +317,306 @@
 }
 
 [data-visual-preset="nezha"] .nezha-node-grid {
-  grid-template-columns: repeat(auto-fill, minmax(min(16.5rem, 100%), 1fr));
-  gap: 0.8rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: start;
+  gap: 1.5rem;
+}
+
+[data-visual-preset="nezha"] .nezha-accordion-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+[data-visual-preset="nezha"] .nezha-accordion {
+  overflow: visible;
+  border: 0;
+  border-radius: 0.4rem;
+  background: rgba(251, 251, 251, 0.15);
+}
+
+[data-visual-preset="nezha"] .nezha-accordion-title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.75em 1em;
+  color: var(--nezha-text);
+  font-weight: 700;
+  list-style: none;
+  cursor: pointer;
+}
+
+[data-visual-preset="nezha"] .nezha-accordion-title::-webkit-details-marker {
+  display: none;
+}
+
+[data-visual-preset="nezha"] .nezha-accordion-title svg {
+  width: 1em;
+  height: 1em;
+  transition: transform 200ms ease;
+}
+
+[data-visual-preset="nezha"]
+  .nezha-accordion:not([open])
+  .nezha-accordion-title
+  svg {
+  transform: rotate(-90deg);
+}
+
+[data-visual-preset="nezha"] .nezha-accordion-content {
+  padding: 0 1em 1em;
+}
+
+[data-visual-preset="nezha"] body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-card {
+  max-width: none;
+  min-width: 0;
+  margin: 0;
+  overflow: visible;
+  color: rgba(35, 35, 35, 0.88);
+}
+
+[data-visual-preset="nezha"] .nezha-reference-card-header {
+  min-height: 0;
+  margin-top: 10px;
+  padding: 1em 1em 5px;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-title-link {
+  flex: 1 1 auto;
+}
+
+[data-visual-preset="nezha"]
+  .nezha-reference-title-link
+  span[aria-label^="地区旗帜"] {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-os-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-name {
+  min-width: 0;
+  font-size: 1.28571429rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-offline {
+  color: var(--nezha-red);
+  font-size: 0.7em;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-info {
+  flex: 0 0 auto;
+  color: var(--nezha-green);
+}
+
+[data-visual-preset="nezha"] .nezha-reference-info-wrap {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-info svg {
+  width: 1.75rem;
+  height: 1.75rem;
+  fill: var(--nezha-green);
+  color: #fff;
+  stroke-width: 2.7;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-popup {
+  position: absolute;
+  z-index: 30;
+  top: 50%;
+  left: calc(100% + 0.9rem);
+  width: 20rem;
+  padding: 1em;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: rgba(250, 250, 250, 0.92);
+  box-shadow: 0 2px 8px rgba(34, 36, 38, 0.18);
+  color: rgba(20, 20, 20, 0.9);
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 2rem;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%) translateX(-0.3rem);
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-popup::before {
+  position: absolute;
+  top: calc(50% - 0.45rem);
+  left: -0.45rem;
+  width: 0.9rem;
+  height: 0.9rem;
+  background: rgba(250, 250, 250, 0.92);
+  content: "";
+  transform: rotate(45deg);
+}
+
+[data-visual-preset="nezha"] .nezha-reference-info-wrap:hover .nezha-reference-popup,
+[data-visual-preset="nezha"] .nezha-reference-info-wrap:focus-within .nezha-reference-popup {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+[data-visual-preset="nezha"] .nezha-reference-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0 1em 1em;
+  font-size: 1rem;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-divider {
+  height: 1px;
+  margin: 0 0 5px;
+  background: rgba(34, 36, 38, 0.15);
+}
+
+[data-visual-preset="nezha"]
+  .nezha-reference-divider
+  + .nezha-reference-progress-row {
+  margin-top: 2rem;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-progress-row,
+[data-visual-preset="nezha"] .nezha-reference-detail-row {
+  display: grid;
+  grid-template-columns: 3fr 13fr;
+  min-height: 3.3rem;
+  align-items: center;
+  gap: 0;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-row-label {
+  color: rgba(35, 35, 35, 0.78);
+  white-space: nowrap;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-progress {
+  height: 1.75rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(124, 126, 134, 0.28);
+}
+
+[data-visual-preset="nezha"] .nezha-reference-progress-fill {
+  display: flex;
+  height: 100%;
+  min-width: 1.8em;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: #000;
+  font-size: 0.8em;
+  font-weight: 700;
+  transition: width 500ms ease;
+}
+
+[data-visual-preset="nezha"]
+  .nezha-reference-progress[data-level="normal"]
+  .nezha-reference-progress-fill {
+  background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
+}
+
+[data-visual-preset="nezha"]
+  .nezha-reference-progress[data-level="warning"]
+  .nezha-reference-progress-fill {
+  background-image: linear-gradient(to right, #fa709a 0%, #fee140 100%);
+}
+
+[data-visual-preset="nezha"]
+  .nezha-reference-progress[data-level="error"]
+  .nezha-reference-progress-fill {
+  background-image: linear-gradient(to top, #ff0844 0%, #ffb199 100%);
+}
+
+[data-visual-preset="nezha"]
+  .nezha-reference-progress[data-level="offline"]
+  .nezha-reference-progress-fill {
+  background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
+}
+
+[data-visual-preset="nezha"] .nezha-reference-detail-value {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.92rem;
+  white-space: nowrap;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-detail-value > span,
+[data-visual-preset="nezha"] .nezha-reference-detail-value > div {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.38rem;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-detail-value svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex: 0 0 auto;
+  stroke-width: 2.5;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-download,
+[data-visual-preset="nezha"] .nezha-reference-download svg {
+  color: var(--nezha-green);
+}
+
+[data-visual-preset="nezha"] .nezha-reference-upload,
+[data-visual-preset="nezha"] .nezha-reference-upload svg {
+  color: red;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-download,
+[data-visual-preset="nezha"] .nezha-reference-upload {
+  color: rgba(35, 35, 35, 0.78);
+}
+
+[data-visual-preset="nezha"] .nezha-reference-download svg {
+  color: var(--nezha-green);
+}
+
+[data-visual-preset="nezha"] .nezha-reference-upload svg {
+  color: red;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-hardware {
+  gap: 0.55rem;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-hardware span:nth-child(1) svg {
+  color: #4d8dff;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-hardware span:nth-child(2) svg {
+  color: #19bd36;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-hardware span:nth-child(3) svg {
+  color: #f22;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-load svg {
+  color: #f22;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-clock {
+  fill: #000;
+  color: #000;
 }
 
 [data-visual-preset="nezha"] .nezha-node-card {
@@ -446,7 +744,7 @@
   background: rgba(112, 128, 144, 0.22);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 767px) {
   [data-visual-preset="nezha"] .nezha-group-content {
     padding: 0.6rem;
   }
@@ -454,6 +752,71 @@
   [data-visual-preset="nezha"] .nezha-node-grid {
     grid-template-columns: 1fr;
     gap: 0.65rem;
+  }
+
+  [data-visual-preset="nezha"] .nezha-reference-card-header {
+    min-height: 4.5rem;
+    padding: 1rem 1.1rem 0.85rem;
+  }
+
+  [data-visual-preset="nezha"]
+    .nezha-reference-title-link
+    span[aria-label^="地区旗帜"],
+  [data-visual-preset="nezha"] .nezha-reference-os-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  [data-visual-preset="nezha"] .nezha-reference-name {
+    font-size: 1.25rem;
+  }
+
+  [data-visual-preset="nezha"] .nezha-reference-info svg {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+
+  [data-visual-preset="nezha"] .nezha-reference-card-content {
+    gap: 0.85rem;
+    padding: 0 1.1rem 1.2rem;
+    font-size: 1rem;
+  }
+
+  [data-visual-preset="nezha"] .nezha-reference-progress-row,
+  [data-visual-preset="nezha"] .nezha-reference-detail-row {
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+    min-height: 2.8rem;
+    gap: 0.55rem;
+  }
+
+  [data-visual-preset="nezha"] .nezha-reference-progress {
+    height: 2.35rem;
+  }
+
+  [data-visual-preset="nezha"] .nezha-reference-detail-value {
+    gap: 0.55rem;
+    font-size: 0.9rem;
+  }
+
+  [data-visual-preset="nezha"] .nezha-reference-hardware {
+    gap: 0.4rem;
+  }
+
+  [data-visual-preset="nezha"] .nezha-reference-popup {
+    top: calc(100% + 0.5rem);
+    right: 0;
+    left: auto;
+    width: min(20rem, calc(100vw - 2rem));
+    transform: none;
+  }
+
+  [data-visual-preset="nezha"]
+    .nezha-reference-info-wrap:hover
+    .nezha-reference-popup,
+  [data-visual-preset="nezha"]
+    .nezha-reference-info-wrap:focus-within
+    .nezha-reference-popup {
+    transform: none;
   }
 }
 .striped-bg-red-translucent-diagonal {
