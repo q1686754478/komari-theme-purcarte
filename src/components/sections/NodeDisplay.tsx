@@ -37,7 +37,7 @@ export const NodeDetailModal = ({ node, onClose }: NodeDetailModalProps) => {
       }`}
       onClick={handleClose}>
       <div
-        className={`purcarte-blur theme-card-style p-5 w-full max-w-4xl max-h-[80vh] transition-transform duration-300 ${
+        className={`purcarte-blur purcarte-surface-popup theme-card-style p-5 w-full max-w-4xl max-h-[80vh] transition-transform duration-300 ${
           isOpen && !isClosing ? "scale-100" : "scale-95"
         }`}
         onClick={(e) => e.stopPropagation()}>

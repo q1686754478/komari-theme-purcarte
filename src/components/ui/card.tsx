@@ -2,14 +2,21 @@ import * as React from "react";
 
 import { cn } from "@/utils";
 
+export type CardSurface = "card" | "nav" | "panel" | "footer";
+
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  surface?: CardSurface;
+}
+
 const Card = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
+  CardProps
+>(({ className, surface = "card", ...props }, ref) => (
   <div
     ref={ref}
     className={cn(
       "purcarte-blur theme-card-style text-card-foreground",
+      `purcarte-surface-${surface}`,
       className
     )}
     {...props}

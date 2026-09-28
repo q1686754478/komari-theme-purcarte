@@ -28,6 +28,7 @@ const Footer = forwardRef<
         right: isSettingsOpen && !isMobile ? "var(--setting-width)" : "0",
       }}>
       <Card
+        surface="footer"
         className={cn(
           selectedFooterStyle !== "followContent" ? "rounded-none" : "",
           "p-2 w-full flex items-center justify-center inset-shadow-sm inset-shadow-(color:--accent-a4)"

@@ -25,17 +25,25 @@
                 "type": "title"
             },
             {
+                "key": "visualPreset",
+                "name": "视觉预设",
+                "type": "select",
+                "options": "purcarte,nezha",
+                "default": "nezha",
+                "help": "选择 PurCarte 原始视觉或 Nezha 视觉预设"
+            },
+            {
                 "key": "mainWidth",
                 "name": "主要内容宽度",
                 "type": "number",
-                "default": 85,
+                "default": 80,
                 "help": "调整主要内容的最大宽度，单位为视口宽度的百分比（vw），建议值为 80-90"
             },
             {
                 "key": "backgroundImage",
                 "name": "桌面端背景图片链接",
                 "type": "string",
-                "default": "/assets/Moonlit-Scenery.webp",
+                "default": "https://s2.loli.net/2023/03/24/NH3vuKOx1jipoBr.webp",
                 "help": "目前支持单张背景图片或图片api，使用“|”分隔亮色模式和暗色模式，填写单个则同时用于亮暗模式，请自行测试（eg: https://test.com/1.png）"
             },
             {
@@ -67,7 +75,7 @@
                 "help": "移动端视频背景链接，与桌面端一样区分亮暗模式，留空则使用桌面端视频"
             },
             {
-                "key": "backagroundAlignment",
+                "key": "backgroundAlignment",
                 "name": "背景对齐方式",
                 "type": "string",
                 "default": "cover,top",
@@ -77,14 +85,14 @@
                 "key": "enableBlur",
                 "name": "启用磨砂玻璃效果",
                 "type": "switch",
-                "default": true,
+                "default": false,
                 "help": "启用后将使主要容器拥有磨砂玻璃效果"
             },
             {
                 "key": "blurValue",
                 "name": "磨砂玻璃模糊值",
                 "type": "number",
-                "default": 10,
+                "default": 0,
                 "help": "调整模糊值大小，数值越大模糊效果越明显，建议值为 5-20，为 0 则表示不启用模糊效果"
             },
             {
@@ -113,7 +121,7 @@
                 "name": "默认主题颜色",
                 "type": "select",
                 "options": "gray,gold,bronze,brown,yellow,amber,orange,tomato,red,ruby,crimson,pink,plum,purple,violet,iris,indigo,blue,cyan,teal,jade,green,grass,lime,mint,sky",
-                "default": "violet",
+                "default": "green",
                 "help": "设置默认主题颜色，颜色对照请参考：https://www.radix-ui.com/themes/docs/theme/color"
             },
             {
@@ -140,7 +148,7 @@
                 "name": "默认外观",
                 "type": "select",
                 "options": "system,light,dark",
-                "default": "system",
+                "default": "light",
                 "help": "设置默认外观为浅色、深色或系统主题"
             },
             {
@@ -214,7 +222,7 @@
                 "name": "底栏样式",
                 "type": "select",
                 "options": "fixed,levitation,followContent,hidden",
-                "default": "fixed",
+                "default": "followContent",
                 "help": "设置底栏样式为 fixed（固定）, levitation（悬浮）, followContent（跟随内容）或 hidden（隐藏）"
             },
             {

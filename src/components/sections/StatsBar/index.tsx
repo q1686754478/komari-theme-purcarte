@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { cn, formatBytes } from "@/utils";
 import { useAppConfig } from "@/config";
 import { useIsMobile } from "@/hooks/useMobile";
@@ -14,7 +14,7 @@ export type { StatsBarProps };
 interface StatEntry {
   key: string;
   label: string;
-  lines: string[];
+  lines: ReactNode[];
   isLabelVertical?: boolean;
   textLeft?: boolean;
 }
@@ -99,10 +99,18 @@ export const StatsBar = (props: StatsBarProps) => {
         lines: loading
           ? ["..."]
           : [
-              `${t("node.uploadPrefix")} ${formatBytes(stats.totalTrafficUp)}`,
-              `${t("node.downloadPrefix")} ${formatBytes(
-                stats.totalTrafficDown
-              )}`,
+              <>
+                <span className="purcarte-icon-upload">
+                  {t("node.uploadPrefix")}
+                </span>{" "}
+                {formatBytes(stats.totalTrafficUp)}
+              </>,
+              <>
+                <span className="purcarte-icon-download">
+                  {t("node.downloadPrefix")}
+                </span>{" "}
+                {formatBytes(stats.totalTrafficDown)}
+              </>,
             ],
         isLabelVertical: !isMobile && isShowStatsInHeader,
         textLeft: true,
@@ -118,12 +126,18 @@ export const StatsBar = (props: StatsBarProps) => {
         lines: loading
           ? ["..."]
           : [
-              `${t("node.uploadPrefix")} ${formatBytes(
-                stats.currentSpeedUp
-              )}/s`,
-              `${t("node.downloadPrefix")} ${formatBytes(
-                stats.currentSpeedDown
-              )}/s`,
+              <>
+                <span className="purcarte-icon-upload">
+                  {t("node.uploadPrefix")}
+                </span>{" "}
+                {formatBytes(stats.currentSpeedUp)}/s
+              </>,
+              <>
+                <span className="purcarte-icon-download">
+                  {t("node.downloadPrefix")}
+                </span>{" "}
+                {formatBytes(stats.currentSpeedDown)}/s
+              </>,
             ],
         isLabelVertical: !isMobile && isShowStatsInHeader,
         textLeft: true,
@@ -186,6 +200,7 @@ export const StatsBar = (props: StatsBarProps) => {
 
   return (
     <Card
+      surface="panel"
       className={cn(
         "relative flex items-center text-primary my-4",
         isMobile ? "text-xs p-2" : "text-sm px-4 min-w-[300px] min-h-[5rem]"

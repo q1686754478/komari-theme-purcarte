@@ -8,8 +8,8 @@ export interface ConfigContextType extends ConfigOptions {
   publicSettings: PublicInfo | null;
   siteStatus: SiteStatus;
   texts: typeof defaultTexts;
-  previewConfig: Partial<ConfigOptions> | null;
-  updatePreviewConfig: (newConfig: Partial<ConfigOptions>) => void;
+  previewConfig: ConfigOptions | null;
+  updatePreviewConfig: (newConfig: ConfigOptions | null) => void;
   reloadConfig: () => Promise<void>;
 }
 

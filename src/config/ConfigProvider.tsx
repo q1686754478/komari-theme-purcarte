@@ -1,4 +1,10 @@
-import { type ReactNode, useEffect, useState, useMemo } from "react";
+import {
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import type { PublicInfo } from "@/types/node.d";
 import { ConfigContext } from "./ConfigContext";
 import { DEFAULT_CONFIG, type ConfigOptions, type SiteStatus } from "./default";
@@ -6,6 +12,8 @@ import { apiService, getWsService } from "@/services/api";
 import Loading from "@/components/loading";
 import { defaultTexts, otherTexts } from "./locales";
 import { mergeTexts, deepMerge } from "@/utils/localeUtils";
+import { resolveThemeConfig, type ThemeSettings } from "./normalize";
+import { getActiveConfig } from "./runtime";
 
 // 配置提供者属性类型
 interface ConfigProviderProps {
@@ -19,12 +27,11 @@ export function ConfigProvider({ children }: ConfigProviderProps) {
   const [publicSettings, setPublicSettings] = useState<PublicInfo | null>(null);
   const [config, setConfig] = useState<ConfigOptions | null>(null);
   const [siteStatus, setSiteStatus] = useState<SiteStatus>("public");
-  const [previewConfig, setPreviewConfig] =
-    useState<Partial<ConfigOptions> | null>(null);
+  const [previewConfig, setPreviewConfig] = useState<ConfigOptions | null>(null);
   const [loading, setLoading] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const loadConfig = async () => {
+  const loadConfig = useCallback(async () => {
     try {
       const { status, publicInfo } = await apiService.checkSiteStatus();
       setSiteStatus(status);
@@ -33,10 +40,9 @@ export function ConfigProvider({ children }: ConfigProviderProps) {
       let mergedConfig: ConfigOptions;
       if (publicInfo) {
         const themeSettings =
-          (publicInfo.theme_settings as ConfigOptions) || {};
+          (publicInfo.theme_settings as ThemeSettings) || {};
         mergedConfig = {
-          ...DEFAULT_CONFIG,
-          ...themeSettings,
+          ...resolveThemeConfig(themeSettings),
           titleText:
             themeSettings.titleText ||
             publicInfo.sitename ||
@@ -74,36 +80,39 @@ export function ConfigProvider({ children }: ConfigProviderProps) {
       setLoading(false);
       setTimeout(() => setIsLoaded(true), 300);
     }
-  };
+  }, []);
 
   useEffect(() => {
     loadConfig();
-  }, []);
+  }, [loadConfig]);
 
   const texts = useMemo(() => {
-    const activeConfig = previewConfig
-      ? { ...config, ...previewConfig }
-      : config;
+    const activeConfig = getActiveConfig(
+      config || DEFAULT_CONFIG,
+      previewConfig
+    );
     const baseTexts = activeConfig?.customTexts
       ? mergeTexts(defaultTexts, activeConfig.customTexts)
       : defaultTexts;
     return deepMerge(baseTexts, otherTexts);
   }, [config, previewConfig]);
 
-  const updatePreviewConfig = (newConfig: Partial<ConfigOptions>) => {
-    setPreviewConfig(newConfig);
-  };
+  const updatePreviewConfig = useCallback(
+    (newConfig: Partial<ConfigOptions> | null) => {
+      setPreviewConfig(
+        newConfig === null ? null : resolveThemeConfig(newConfig)
+      );
+    },
+    []
+  );
 
-  const reloadConfig = async () => {
+  const reloadConfig = useCallback(async () => {
     setLoading(true);
     await loadConfig();
-  };
+  }, [loadConfig]);
 
   const activeConfig = useMemo(
-    () =>
-      previewConfig
-        ? { ...(config || DEFAULT_CONFIG), ...previewConfig }
-        : config || DEFAULT_CONFIG,
+    () => getActiveConfig(config || DEFAULT_CONFIG, previewConfig),
     [config, previewConfig]
   );
 

@@ -133,11 +133,15 @@ const LoadCharts = memo(
           <>
             <Flex gap="0" align="end" direction="column">
               <span>
-                {t("node.uploadPrefix")}{" "}
+                <span className="purcarte-icon-upload">
+                  {t("node.uploadPrefix")}
+                </span>{" "}
                 {formatBytes(liveData?.net_out || 0, true)}
               </span>
               <span>
-                {t("node.downloadPrefix")}{" "}
+                <span className="purcarte-icon-download">
+                  {t("node.downloadPrefix")}
+                </span>{" "}
                 {formatBytes(liveData?.net_in || 0, true)}
               </span>
             </Flex>
@@ -233,7 +237,11 @@ const LoadCharts = memo(
           };
 
       return (
-        <Card className={cn} key={config.id} style={{ height: "220px" }}>
+        <Card
+          surface="card"
+          className={cn}
+          key={config.id}
+          style={{ height: "220px" }}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 h-[80px]">
             <CardTitle className="text-sm font-medium">
               {config.title}

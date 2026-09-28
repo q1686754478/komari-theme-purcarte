@@ -1,8 +1,7 @@
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { useAppConfig, useLocale } from "@/config/hooks";
 import type { ConfigOptions } from "@/config/default";
-import { DEFAULT_CONFIG } from "@/config/default";
 import { defaultTexts } from "@/config/locales";
 import { apiService } from "@/services/api";
 import SettingItem from "./SettingItem";
@@ -10,6 +9,11 @@ import CustomTextsEditor from "./CustomTextsEditor";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/useMobile";
 import { toast } from "sonner";
+import { resolveThemeConfig } from "@/config/normalize";
+import {
+  createConfigSaveAction,
+  getPreviewConfig,
+} from "@/config/runtime";
 
 interface SettingsPanelProps {
   isOpen: boolean;
@@ -19,10 +23,18 @@ interface SettingsPanelProps {
 const SettingsPanel = ({ isOpen, onClose }: SettingsPanelProps) => {
   const { t } = useLocale();
   const config = useAppConfig();
-  const { publicSettings, updatePreviewConfig, reloadConfig } = config;
+  const {
+    publicSettings,
+    updatePreviewConfig: setPreviewConfig,
+    reloadConfig,
+  } = config;
+  const persistedConfig = useMemo(
+    () => resolveThemeConfig(publicSettings?.theme_settings),
+    [publicSettings?.theme_settings]
+  );
   const [settingsConfig, setSettingsConfig] = useState<any[]>([]);
-  const [editingConfig, setEditingConfig] = useState<Partial<ConfigOptions>>(
-    {}
+  const [editingConfig, setEditingConfig] = useState<ConfigOptions>(() =>
+    resolveThemeConfig(publicSettings?.theme_settings)
   );
   const [currentPage, setCurrentPage] = useState("main");
   const [customTextsPage, setCustomTextsPage] = useState("main");
@@ -50,58 +62,60 @@ const SettingsPanel = ({ isOpen, onClose }: SettingsPanelProps) => {
   }, [publicSettings?.theme, t]);
 
   useEffect(() => {
-    setEditingConfig(publicSettings?.theme_settings || {});
-  }, [publicSettings?.theme_settings]);
+    setEditingConfig(persistedConfig);
+  }, [persistedConfig]);
 
   useEffect(() => {
-    updatePreviewConfig(editingConfig);
+    setPreviewConfig(getPreviewConfig(isOpen, isPreviewing, editingConfig));
     const hasChanges =
-      JSON.stringify(editingConfig) !==
-      JSON.stringify(publicSettings?.theme_settings || {});
+      JSON.stringify(editingConfig) !== JSON.stringify(persistedConfig);
     setHasUnsavedChanges(hasChanges);
-  }, [editingConfig, publicSettings?.theme_settings, updatePreviewConfig]);
+  }, [editingConfig, isOpen, isPreviewing, persistedConfig, setPreviewConfig]);
 
   useEffect(() => {
     return () => {
+      setPreviewConfig(null);
       if (toastId.current) {
         toast.dismiss(toastId.current);
       }
     };
-  }, []);
+  }, [setPreviewConfig]);
 
   const handleConfigChange = (key: keyof ConfigOptions, value: any) => {
     const newConfig = { ...editingConfig, [key]: value };
     setEditingConfig(newConfig);
-    if (isPreviewing) {
-      updatePreviewConfig(newConfig);
-    }
   };
 
-  const handleSave = useCallback(async () => {
-    try {
-      await apiService.saveThemeSettings(
-        publicSettings?.theme || "",
-        editingConfig
-      );
-      toast.success(t("setting.saveSuccess"));
-      if (toastId.current) {
-        toast.dismiss(toastId.current);
-        toastId.current = null;
+  const saveConfig = useCallback(
+    async (configToSave: ConfigOptions) => {
+      try {
+        await apiService.saveThemeSettings(
+          publicSettings?.theme || "",
+          configToSave
+        );
+        setPreviewConfig(null);
+        setIsPreviewing(false);
+        toast.success(t("setting.saveSuccess"));
+        if (toastId.current) {
+          toast.dismiss(toastId.current);
+          toastId.current = null;
+        }
+        await reloadConfig();
+        onClose();
+      } catch (error) {
+        console.error(t("setting.saveThemeError"), error);
+        toast.error(t("setting.saveError"));
       }
-      await reloadConfig();
-      onClose();
-    } catch (error) {
-      console.error(t("setting.saveThemeError"), error);
-      toast.error(t("setting.saveError"));
-    }
-  }, [editingConfig, onClose, publicSettings, reloadConfig, t]);
+    },
+    [onClose, publicSettings?.theme, reloadConfig, setPreviewConfig, t]
+  );
 
   const handleReset = () => {
     toast(t("setting.resetConfirm"), {
       action: {
         label: t("setting.resetConfirmAction"),
         onClick: () => {
-          setEditingConfig(DEFAULT_CONFIG);
+          setEditingConfig(resolveThemeConfig({}));
           if (toastId.current) {
             toast.dismiss(toastId.current);
             toastId.current = null;
@@ -118,6 +132,9 @@ const SettingsPanel = ({ isOpen, onClose }: SettingsPanelProps) => {
         cancel: {
           label: t("setting.cancel"),
           onClick: async () => {
+            setPreviewConfig(null);
+            setIsPreviewing(false);
+            setEditingConfig(persistedConfig);
             await reloadConfig();
             toast.success(t("setting.unsavedChangesDesc"));
           },
@@ -127,14 +144,14 @@ const SettingsPanel = ({ isOpen, onClose }: SettingsPanelProps) => {
       toast.dismiss(toastId.current);
       toastId.current = null;
     }
-  }, [hasUnsavedChanges, reloadConfig, t]);
+  }, [hasUnsavedChanges, persistedConfig, reloadConfig, setPreviewConfig, t]);
 
   const handlePreviewToggle = () => {
     if (isPreviewing) {
-      updatePreviewConfig({});
+      setPreviewConfig(null);
       setIsPreviewing(false);
     } else {
-      updatePreviewConfig(editingConfig);
+      setPreviewConfig(editingConfig);
       setIsPreviewing(true);
     }
   };
@@ -158,17 +175,16 @@ const SettingsPanel = ({ isOpen, onClose }: SettingsPanelProps) => {
       reader.onload = (e) => {
         try {
           const importedConfig = JSON.parse(e.target?.result as string);
-          const sanitizedConfig: Partial<ConfigOptions> = {};
-          for (const key in DEFAULT_CONFIG) {
-            if (Object.prototype.hasOwnProperty.call(importedConfig, key)) {
-              (sanitizedConfig as any)[key] = (importedConfig as any)[key];
-            }
-          }
-          setEditingConfig(sanitizedConfig);
+          const resolvedImportedConfig = resolveThemeConfig(importedConfig);
+          setEditingConfig(resolvedImportedConfig);
+          const saveImportedConfig = createConfigSaveAction(
+            resolvedImportedConfig,
+            saveConfig
+          );
           toast.success(t("setting.importSuccess"), {
             action: {
               label: t("setting.save"),
-              onClick: () => setTimeout(() => handleSave(), 300),
+              onClick: () => void saveImportedConfig(),
             },
           });
         } catch (error) {
@@ -192,9 +208,8 @@ const SettingsPanel = ({ isOpen, onClose }: SettingsPanelProps) => {
         <h2 className="text-xl font-bold">{t("setting.title")}</h2>
         <Button
           onClick={() => {
-            if (isPreviewing) {
-              updatePreviewConfig({});
-            }
+            setPreviewConfig(null);
+            setIsPreviewing(false);
             onClose();
           }}
           variant="ghost">
@@ -221,7 +236,9 @@ const SettingsPanel = ({ isOpen, onClose }: SettingsPanelProps) => {
             : t("setting.togglePreview.off")}
         </Button>
         <Button onClick={handleReset}>{t("setting.reset")}</Button>
-        <Button onClick={handleSave} className="bg-green-500">
+        <Button
+          onClick={() => void saveConfig(editingConfig)}
+          className="bg-green-500">
           {t("setting.save")}
         </Button>
       </div>

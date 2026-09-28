@@ -41,6 +41,7 @@ export const NodeTable = ({
       <div className="min-w-[1080px] px-2 pb-2">
         <div className="space-y-1">
           <Card
+            surface="panel"
             className={`theme-card-style text-primary font-bold grid ${gridCols} text-center gap-4 p-2 items-center transition-colors duration-200`}>
             <div className="col-span-2">{t("node.name")}</div>
             <div className="col-span-1">{t("node.cpu")}</div>
@@ -107,6 +108,7 @@ const NodeTableRow = ({
 
   return (
     <Card
+      surface="card"
       className={
         !isOnline
           ? "striped-bg-red-translucent-diagonal ring-2 ring-red-500/50"
@@ -140,14 +142,18 @@ const NodeTableRow = ({
           </div>
         </div>
         <div className="col-span-1 flex items-center text-left">
-          <CpuIcon className="inline-block size-5 flex-shrink-0 text-blue-600" />
+          <CpuIcon className="purcarte-icon-hardware inline-block size-5 flex-shrink-0 text-blue-600" />
           <div className="ml-1 w-full items-center justify-center">
             <div>
               {node.cpu_cores} {t("node.cores")}
             </div>
             {enableListItemProgressBar ? (
               <div className="flex items-center gap-1">
-                <ProgressBar value={cpuUsage} h="h-2" />
+                <ProgressBar
+                  value={cpuUsage}
+                  offline={!isOnline}
+                  h="h-2"
+                />
                 <span className="w-10 text-right text-xs">
                   {isOnline
                     ? `${cpuUsage.toFixed(0)}%`
@@ -162,12 +168,16 @@ const NodeTableRow = ({
           </div>
         </div>
         <div className="col-span-1 flex items-center text-left">
-          <MemoryStickIcon className="inline-block size-5 flex-shrink-0 text-green-600" />
+          <MemoryStickIcon className="purcarte-icon-hardware inline-block size-5 flex-shrink-0 text-green-600" />
           <div className="ml-1 w-full items-center justify-center">
             <div>{formatBytes(node.mem_total)}</div>
             {enableListItemProgressBar ? (
               <div className="flex items-center gap-1">
-                <ProgressBar value={memUsage} h="h-2" />
+                <ProgressBar
+                  value={memUsage}
+                  offline={!isOnline}
+                  h="h-2"
+                />
                 <span className="w-10 text-right text-xs">
                   {isOnline
                     ? `${memUsage.toFixed(0)}%`
@@ -183,13 +193,17 @@ const NodeTableRow = ({
         </div>
         {enableSwap && (
           <div className="col-span-1 flex items-center text-left">
-            <MemoryStickIcon className="inline-block size-5 flex-shrink-0 text-purple-600" />
+            <MemoryStickIcon className="purcarte-icon-hardware inline-block size-5 flex-shrink-0 text-purple-600" />
             {node.swap_total > 0 ? (
               <div className="ml-1 w-full items-center justify-center">
                 <div>{formatBytes(node.swap_total)}</div>
                 {enableListItemProgressBar ? (
                   <div className="flex items-center gap-1">
-                    <ProgressBar value={swapUsage} h="h-2" />
+                    <ProgressBar
+                      value={swapUsage}
+                      offline={!isOnline}
+                      h="h-2"
+                    />
                     <span className="w-10 text-right text-xs">
                       {isOnline
                         ? `${swapUsage.toFixed(0)}%`
@@ -212,12 +226,16 @@ const NodeTableRow = ({
           </div>
         )}
         <div className="col-span-1 flex items-center text-left">
-          <HardDriveIcon className="inline-block size-5 flex-shrink-0 text-red-600" />
+          <HardDriveIcon className="purcarte-icon-hardware inline-block size-5 flex-shrink-0 text-red-600" />
           <div className="ml-1 w-full items-center justify-center">
             <div>{formatBytes(node.disk_total)}</div>
             {enableListItemProgressBar ? (
               <div className="flex items-center gap-1">
-                <ProgressBar value={diskUsage} h="h-2" />
+                <ProgressBar
+                  value={diskUsage}
+                  offline={!isOnline}
+                  h="h-2"
+                />
                 <span className="w-10 text-right text-xs">
                   {isOnline
                     ? `${diskUsage.toFixed(0)}%`
@@ -233,11 +251,15 @@ const NodeTableRow = ({
         </div>
         <div className="col-span-1 text-left">
           <div>
-            {t("node.uploadPrefix")}{" "}
+            <span className="purcarte-icon-upload">
+              {t("node.uploadPrefix")}
+            </span>{" "}
             {stats ? formatBytes(stats.net_out, true) : t("node.notAvailable")}
           </div>
           <div>
-            {t("node.downloadPrefix")}{" "}
+            <span className="purcarte-icon-download">
+              {t("node.downloadPrefix")}
+            </span>{" "}
             {stats ? formatBytes(stats.net_in, true) : t("node.notAvailable")}
           </div>
         </div>
@@ -246,13 +268,17 @@ const NodeTableRow = ({
             <div className="flex flex-col">
               <div>
                 <div>
-                  {t("node.uploadPrefix")}{" "}
+                  <span className="purcarte-icon-upload">
+                    {t("node.uploadPrefix")}
+                  </span>{" "}
                   {stats
                     ? formatBytes(stats.net_total_up)
                     : t("node.notAvailable")}
                 </div>
                 <div>
-                  {t("node.downloadPrefix")}{" "}
+                  <span className="purcarte-icon-download">
+                    {t("node.downloadPrefix")}
+                  </span>{" "}
                   {stats
                     ? formatBytes(stats.net_total_down)
                     : t("node.notAvailable")}
@@ -261,7 +287,11 @@ const NodeTableRow = ({
               {node.traffic_limit !== 0 && isOnline && stats && (
                 <>
                   <div className="w-[80%] flex items-center gap-1">
-                    <ProgressBar value={trafficPercentage} h="h-2" />
+                    <ProgressBar
+                      value={trafficPercentage}
+                      offline={!isOnline}
+                      h="h-2"
+                    />
                     <span className="text-right text-xs">
                       {node.traffic_limit !== 0
                         ? `${trafficPercentage.toFixed(0)}%`
@@ -282,13 +312,17 @@ const NodeTableRow = ({
               <div>
                 <div>
                   <div>
-                    {t("node.uploadPrefix")}{" "}
+                    <span className="purcarte-icon-upload">
+                      {t("node.uploadPrefix")}
+                    </span>{" "}
                     {stats
                       ? formatBytes(stats.net_total_up)
                       : t("node.notAvailable")}
                   </div>
                   <div>
-                    {t("node.downloadPrefix")}{" "}
+                    <span className="purcarte-icon-download">
+                      {t("node.downloadPrefix")}
+                    </span>{" "}
                     {stats
                       ? formatBytes(stats.net_total_down)
                       : t("node.notAvailable")}
