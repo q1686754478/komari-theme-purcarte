@@ -1027,7 +1027,8 @@ body:has(.radix-themes.dark)
   display: flex;
   justify-content: flex-start;
   min-width: 0;
-  gap: 0.4em;
+  gap: 0.55em;
+  font-size: 0.92em;
 }
 
 [data-visual-preset="nezha"] .nezha-reference-load {
@@ -1059,6 +1060,10 @@ body:has(.radix-themes.dark)
   font-size: 1.1rem;
 }
 
+[data-visual-preset="nezha"] .nezha-reference-hardware .bi {
+  font-size: 1.1rem;
+}
+
 @media (min-width: 768px) and (max-width: 1400px) {
   [data-visual-preset="nezha"] .nezha-reference-progress-row,
   [data-visual-preset="nezha"] .nezha-reference-detail-row {
@@ -1071,7 +1076,8 @@ body:has(.radix-themes.dark)
   }
 
   [data-visual-preset="nezha"] .nezha-reference-hardware {
-    gap: 0.35em;
+    gap: 0.5em;
+    font-size: 0.76em;
   }
 
   [data-visual-preset="nezha"] .nezha-reference-load {
@@ -1083,7 +1089,7 @@ body:has(.radix-themes.dark)
   }
 
   [data-visual-preset="nezha"] .nezha-reference-hardware .bi {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 }
 
@@ -1382,8 +1388,8 @@ body:has(.radix-themes.dark)
   }
 
   [data-visual-preset="nezha"] .nezha-reference-hardware {
-    gap: 0.3em;
-    font-size: clamp(11px, 3.75vw, 13px);
+    gap: 0.45em;
+    font-size: clamp(10.5px, 3.6vw, 12.5px);
   }
 
   [data-visual-preset="nezha"] .nezha-reference-load {
@@ -1391,7 +1397,7 @@ body:has(.radix-themes.dark)
   }
 
   [data-visual-preset="nezha"] .nezha-reference-hardware .bi {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   [data-visual-preset="nezha"] .nezha-reference-popup {
