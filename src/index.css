@@ -174,16 +174,16 @@
 }
 
 :root[data-visual-preset="nezha"] {
-  --surface-nav: rgba(255, 255, 255, 0.55);
-  --surface-panel: rgba(251, 251, 251, 0.15);
-  --surface-card: rgba(250, 250, 250, 0.64);
-  --surface-popup: rgba(250, 250, 250, 0.92);
-  --surface-footer: rgba(250, 250, 250, 0.64);
-  --nezha-text: #000;
-  --nezha-secondary: rgba(0, 0, 0, 0.68);
-  --nezha-border: rgba(34, 36, 38, 0.15);
-  --nezha-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.14),
-    0 2px 5px 0 rgba(34, 36, 38, 0.08);
+  --surface-nav: rgba(247, 249, 252, 0.72);
+  --surface-panel: rgba(247, 249, 252, 0.68);
+  --surface-card: rgba(248, 250, 252, 0.82);
+  --surface-popup: rgba(248, 250, 252, 0.96);
+  --surface-footer: rgba(247, 249, 252, 0.78);
+  --nezha-text: #20252d;
+  --nezha-secondary: #58616e;
+  --nezha-border: rgba(40, 48, 60, 0.14);
+  --nezha-shadow: 0 12px 28px -20px rgba(24, 31, 42, 0.48),
+    0 2px 8px rgba(24, 31, 42, 0.08);
   --nezha-blue: #0a94f2;
   --nezha-orange: #f2711c;
   --nezha-crimson: #db2828;
@@ -255,7 +255,8 @@
 }
 
 [data-visual-preset="nezha"] .radix-themes {
-  font-family: Arial, Helvetica, sans-serif !important;
+  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial,
+    sans-serif !important;
 }
 
 [data-visual-preset="nezha"] .purcarte-surface-nav {
@@ -275,12 +276,13 @@
 }
 
 [data-visual-preset="nezha"] .purcarte-surface-card {
+  --purcarte-blur: 6px;
   --purcarte-card-color: var(--surface-card);
   background-color: var(--surface-card) !important;
-  border: 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.58) !important;
   border-radius: var(--nezha-radius-card) !important;
-  box-shadow: 0 1px 3px 0 rgba(34, 36, 38, 0.15),
-    0 0 0 1px rgba(34, 36, 38, 0.05) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    var(--nezha-shadow) !important;
   color: var(--nezha-text);
 }
 
@@ -366,7 +368,7 @@
 [data-visual-preset="nezha"] .nezha-node-grid {
   width: 100%;
   max-width: 1127px;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: start;
   gap: 1.5em;
   font-size: 14px;
@@ -429,8 +431,9 @@
   min-width: 0;
   margin: 0;
   overflow: visible;
-  color: rgba(35, 35, 35, 0.88);
+  color: var(--nezha-text);
   font-size: 14px;
+  font-variant-numeric: tabular-nums;
 }
 
 [data-visual-preset="nezha"] .radix-themes.dark .nezha-reference-card {
@@ -483,9 +486,10 @@
 
 [data-visual-preset="nezha"] .nezha-reference-name {
   min-width: 0;
-  font-size: 1.28571429em;
+  color: var(--nezha-text);
+  font-size: 1.15em;
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.25;
 }
 
 [data-visual-preset="nezha"] .nezha-reference-offline {
@@ -600,7 +604,10 @@
 }
 
 [data-visual-preset="nezha"] .nezha-reference-row-label {
-  color: rgba(35, 35, 35, 0.78);
+  color: var(--nezha-secondary);
+  font-size: 0.93em;
+  font-weight: 500;
+  letter-spacing: 0.01em;
   white-space: nowrap;
 }
 
@@ -608,7 +615,8 @@
   height: 1.75em;
   overflow: hidden;
   border-radius: 999px;
-  background: rgba(124, 126, 134, 0.28);
+  background: rgba(71, 85, 105, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(71, 85, 105, 0.035);
 }
 
 [data-visual-preset="nezha"] .nezha-reference-progress-fill {
@@ -627,7 +635,7 @@
 [data-visual-preset="nezha"]
   .nezha-reference-progress[data-level="normal"]
   .nezha-reference-progress-fill {
-  background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
+  background-image: linear-gradient(120deg, #b7ec87 0%, #6fd39f 100%);
 }
 
 [data-visual-preset="nezha"]
@@ -654,6 +662,7 @@
   align-items: center;
   gap: 0.6em;
   font-size: 1em;
+  font-weight: 500;
   white-space: nowrap;
 }
 
@@ -684,7 +693,7 @@
 
 [data-visual-preset="nezha"] .nezha-reference-download,
 [data-visual-preset="nezha"] .nezha-reference-upload {
-  color: rgba(35, 35, 35, 0.78);
+  color: var(--nezha-text);
 }
 
 [data-visual-preset="nezha"] .nezha-reference-download svg {
@@ -696,7 +705,15 @@
 }
 
 [data-visual-preset="nezha"] .nezha-reference-hardware {
-  gap: 0.55em;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.45em;
+}
+
+[data-visual-preset="nezha"] .nezha-reference-hardware > span {
+  flex: 0 0 auto;
+  gap: 0.2em;
+  font-size: 0.93em;
 }
 
 [data-visual-preset="nezha"] .nezha-reference-traffic svg {
@@ -704,7 +721,7 @@
   height: 1.1em;
   flex: 0 0 auto;
   fill: currentColor;
-  color: #000;
+  color: #303844;
 }
 
 [data-visual-preset="nezha"] .nezha-reference-hardware .bi,
@@ -715,24 +732,24 @@
 }
 
 [data-visual-preset="nezha"] .nezha-reference-hardware span:nth-child(1) .bi {
-  color: #4a86e8;
+  color: #4b82cf;
 }
 
 [data-visual-preset="nezha"] .nezha-reference-hardware span:nth-child(2) .bi {
-  color: #00ac0d;
+  color: #2aa35a;
 }
 
 [data-visual-preset="nezha"] .nezha-reference-hardware span:nth-child(3) .bi {
-  color: #e41e10;
+  color: #d8564f;
 }
 
 [data-visual-preset="nezha"] .nezha-reference-load .bi {
-  color: #e41e10;
+  color: #d8564f;
 }
 
 [data-visual-preset="nezha"] .nezha-reference-clock {
-  fill: #000;
-  color: #000;
+  fill: #303844;
+  color: #303844;
 }
 
 [data-visual-preset="nezha"] .radix-themes.dark .nezha-reference-divider {
