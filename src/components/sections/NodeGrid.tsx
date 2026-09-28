@@ -74,15 +74,16 @@ export const NodeGrid = ({
   return (
     <Card
       surface="card"
-      className={`flex flex-col mx-auto w-full max-w-sm ${
+      data-online={isOnline ? "true" : "false"}
+      className={`nezha-node-card flex flex-col mx-auto w-full max-w-sm ${
         isOnline
           ? ""
           : "striped-bg-red-translucent-diagonal ring-2 ring-red-500/50"
       }`}>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+      <CardHeader className="nezha-node-card-header flex flex-row items-center justify-between space-y-0 pb-2">
         <Link
           to={`/instance/${node.uuid}`}
-          className="hover:underline hover:text-(--accent-11)">
+          className="nezha-node-title-link min-w-0 hover:underline hover:text-(--accent-11)">
           <div className="flex items-center gap-2">
             <Flag flag={node.region}></Flag>
             <img
@@ -91,20 +92,28 @@ export const NodeGrid = ({
               className="w-6 h-6 object-contain"
               loading="lazy"
             />
-            <CardTitle className="text-base font-bold">{node.name}</CardTitle>
+            <CardTitle className="nezha-node-name truncate text-base font-bold">
+              {node.name}
+              {!isOnline && (
+                <span className="nezha-offline-label"> [Offline]</span>
+              )}
+            </CardTitle>
           </div>
         </Link>
-        <button onClick={onShowDetails}>
+        <button
+          className="nezha-node-info"
+          onClick={onShowDetails}
+          aria-label={t("node.details", { name: node.name })}>
           <Info className="h-5 w-5" />
         </button>
       </CardHeader>
-      <CardContent className="flex-grow space-y-3 text-sm text-nowrap">
-        <div className="flex flex-wrap gap-1 mb-2">
+      <CardContent className="nezha-node-card-content flex-grow space-y-3 text-sm text-nowrap">
+        <div className="nezha-node-tags flex flex-wrap gap-1 mb-2">
           <Tag tags={tagList} />
         </div>
-        <div className="border-t border-(--accent-4)/50 my-2"></div>
+        <div className="nezha-node-divider border-t border-(--accent-4)/50 my-2"></div>
         {isShowHWBarInCard && (
-          <div className="flex items-center justify-around whitespace-nowrap">
+          <div className="nezha-hardware-row flex items-center justify-around whitespace-nowrap">
             <div className="flex items-center gap-1">
               <CpuIcon className="purcarte-icon-hardware size-4 text-blue-600 flex-shrink-0" />
               <span>
@@ -252,8 +261,8 @@ export const NodeGrid = ({
             </div>
           </div>
         )}
-        <div className="border-t border-(--accent-4)/50 my-2"></div>
-        <div className="flex justify-between text-xs">
+        <div className="nezha-node-divider border-t border-(--accent-4)/50 my-2"></div>
+        <div className="nezha-meta-row flex justify-between text-xs">
           <span>{t("node.network")}</span>
           <div>
             <span>
@@ -273,7 +282,7 @@ export const NodeGrid = ({
           </div>
         </div>
         {selectTrafficProgressStyle === "circular" && (
-          <div className="flex items-center justify-between text-xs">
+          <div className="nezha-meta-row flex items-center justify-between text-xs">
             <span className="w-1/5">{t("node.traffic")}</span>
             <div className="flex items-center justify-between w-4/5">
               <div className="flex items-center w-1/4">
@@ -318,11 +327,11 @@ export const NodeGrid = ({
             </div>
           </div>
         )}
-        <div className="flex justify-between text-xs">
+        <div className="nezha-meta-row flex justify-between text-xs">
           <span>{t("node.load")}</span>
           <span>{load}</span>
         </div>
-        <div className="flex justify-between text-xs">
+        <div className="nezha-meta-row flex justify-between text-xs">
           <div className="flex justify-start w-full">
             <span className="mr-1">{t("node.expiredAt")}</span>
             <span>{expired_at}</span>

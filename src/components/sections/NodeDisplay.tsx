@@ -84,7 +84,7 @@ export const NodeDisplayContainer = ({
 
   return (
     <>
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] gap-4">
+      <div className="nezha-node-grid grid grid-cols-[repeat(auto-fill,minmax(18rem,1fr))] gap-4">
         {nodes.map((node) => children(node, () => setSelectedNode(node)))}
       </div>
       {selectedNode && (

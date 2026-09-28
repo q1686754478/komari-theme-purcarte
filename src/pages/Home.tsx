@@ -18,6 +18,7 @@ import {
 import { useIsMobile } from "@/hooks/useMobile";
 import { useLocale } from "@/config/hooks";
 import { cn } from "@/utils";
+import { ChevronDown } from "lucide-react";
 
 interface HomePageProps {
   searchTerm: string;
@@ -51,6 +52,7 @@ const HomePage: React.FC<HomePageProps> = ({
     selectTrafficProgressStyle,
     isShowStatsInHeader,
     mergeGroupsWithStats,
+    visualPreset,
   } = useAppConfig();
   const { t } = useLocale();
 
@@ -122,7 +124,18 @@ const HomePage: React.FC<HomePageProps> = ({
 
       <div className={cn("space-y-4", viewMode === "table" && "-mx-2 -mb-2")}>
         {filteredNodes.length > 0 ? (
-          renderContent()
+          viewMode === "grid" && visualPreset === "nezha" ? (
+            <section className="nezha-group-panel" aria-label={selectedGroup}>
+              <div className="nezha-group-title">
+                <ChevronDown aria-hidden="true" className="size-4" />
+                <span>{selectedGroup}</span>
+                <span className="nezha-group-count">{filteredNodes.length}</span>
+              </div>
+              <div className="nezha-group-content">{renderContent()}</div>
+            </section>
+          ) : (
+            renderContent()
+          )
         ) : (
           <div className="flex flex-grow items-center justify-center">
             <Card className="w-full max-w-md">
