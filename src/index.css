@@ -174,18 +174,25 @@
 }
 
 :root[data-visual-preset="nezha"] {
-  --surface-nav: rgba(255, 255, 255, 0.55);
-  --surface-panel: rgba(251, 251, 251, 0.15);
-  --surface-card: rgba(250, 250, 250, 0.64);
-  --surface-popup: rgba(250, 250, 250, 0.92);
-  --surface-footer: rgba(250, 250, 250, 0.64);
+  --surface-nav: rgba(255, 255, 255, 0.92);
+  --surface-panel: rgba(255, 255, 255, 0.94);
+  --surface-card: #fff;
+  --surface-popup: rgba(255, 255, 255, 0.98);
+  --surface-footer: rgba(255, 255, 255, 0.94);
   --nezha-text: #000;
   --nezha-secondary: rgba(0, 0, 0, 0.68);
+  --nezha-border: rgba(34, 36, 38, 0.15);
+  --nezha-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.14),
+    0 2px 5px 0 rgba(34, 36, 38, 0.08);
+  --nezha-blue: #0a94f2;
+  --nezha-orange: #f2711c;
+  --nezha-crimson: #db2828;
+  --nezha-offline: #708090;
   --nezha-green: #21ba45;
   --nezha-red: #db2828;
-  --nezha-radius-panel: 0.4rem;
-  --nezha-radius-card: 0.6rem;
-  --nezha-radius-popup: 5px;
+  --nezha-radius-panel: 0.28571429rem;
+  --nezha-radius-card: 0.28571429rem;
+  --nezha-radius-popup: 0.28571429rem;
   --foreground: var(--nezha-text);
   --card-foreground: var(--nezha-text);
   --popover-foreground: var(--nezha-text);
@@ -194,16 +201,18 @@
 }
 
 [data-visual-preset="nezha"] .radix-themes.dark {
-  --surface-nav: var(--card-dark, rgba(23, 23, 23, 0.8));
-  --surface-panel: rgba(23, 23, 23, 0.35);
-  --surface-card: var(--card-dark, rgba(23, 23, 23, 0.64));
-  --surface-popup: rgba(23, 23, 23, 0.92);
-  --surface-footer: var(--card-dark, rgba(23, 23, 23, 0.64));
+  --surface-nav: rgba(22, 24, 28, 0.94);
+  --surface-panel: rgba(29, 31, 36, 0.96);
+  --surface-card: #202228;
+  --surface-popup: rgba(29, 31, 36, 0.98);
+  --surface-footer: rgba(29, 31, 36, 0.96);
   --nezha-text: #fafafa;
   --nezha-secondary: rgba(255, 255, 255, 0.68);
+  --nezha-border: rgba(255, 255, 255, 0.14);
+  --nezha-shadow: 0 1px 2px rgba(0, 0, 0, 0.35),
+    0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-@layer utilities {
 [data-visual-preset="nezha"] .purcarte-surface-nav {
   background-color: var(--surface-nav) !important;
   border: 0 !important;
@@ -214,29 +223,33 @@
 
 [data-visual-preset="nezha"] .purcarte-surface-panel {
   background-color: var(--surface-panel) !important;
-  border: 0 !important;
+  border: 1px solid var(--nezha-border) !important;
   border-radius: var(--nezha-radius-panel) !important;
+  box-shadow: var(--nezha-shadow) !important;
   color: var(--nezha-text);
 }
 
 [data-visual-preset="nezha"] .purcarte-surface-card {
   background-color: var(--surface-card) !important;
-  border: 0 !important;
+  border: 1px solid var(--nezha-border) !important;
   border-radius: var(--nezha-radius-card) !important;
+  box-shadow: var(--nezha-shadow) !important;
   color: var(--nezha-text);
 }
 
 [data-visual-preset="nezha"] .purcarte-surface-popup {
   background-color: var(--surface-popup) !important;
-  border: 0 !important;
+  border: 1px solid var(--nezha-border) !important;
   border-radius: var(--nezha-radius-popup) !important;
+  box-shadow: var(--nezha-shadow) !important;
   color: var(--nezha-text);
 }
 
 [data-visual-preset="nezha"] .purcarte-surface-footer {
   background-color: var(--surface-footer) !important;
-  border: 0 !important;
+  border: 1px solid var(--nezha-border) !important;
   border-radius: var(--nezha-radius-card) !important;
+  box-shadow: var(--nezha-shadow) !important;
   color: var(--nezha-text);
   font-weight: 600;
 }
@@ -259,43 +272,190 @@
   color: var(--nezha-red);
 }
 
+[data-visual-preset="nezha"] .nezha-group-panel {
+  overflow: hidden;
+  border: 1px solid var(--nezha-border);
+  border-radius: var(--nezha-radius-panel);
+  background: var(--surface-panel);
+  box-shadow: var(--nezha-shadow);
+}
+
+[data-visual-preset="nezha"] .nezha-group-title {
+  display: flex;
+  min-height: 2.9rem;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--nezha-border);
+  color: var(--nezha-text);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+[data-visual-preset="nezha"] .nezha-group-title svg {
+  color: var(--nezha-secondary);
+}
+
+[data-visual-preset="nezha"] .nezha-group-count {
+  display: inline-flex;
+  min-width: 1.65rem;
+  height: 1.35rem;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  padding: 0 0.45rem;
+  border-radius: 999px;
+  background: rgba(10, 148, 242, 0.12);
+  color: var(--nezha-blue);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+[data-visual-preset="nezha"] .nezha-group-content {
+  padding: 0.85rem;
+}
+
+[data-visual-preset="nezha"] .nezha-node-grid {
+  grid-template-columns: repeat(auto-fill, minmax(min(16.5rem, 100%), 1fr));
+  gap: 0.8rem;
+}
+
+[data-visual-preset="nezha"] .nezha-node-card {
+  max-width: none;
+  margin: 0;
+  overflow: hidden;
+}
+
+[data-visual-preset="nezha"] .nezha-node-card[data-online="false"] {
+  background-image: none !important;
+  box-shadow: var(--nezha-shadow) !important;
+  --tw-ring-shadow: 0 0 #0000;
+}
+
+[data-visual-preset="nezha"] .nezha-node-card-header {
+  min-height: 3.15rem;
+  padding: 0.7rem 0.85rem;
+  border-bottom: 1px solid var(--nezha-border);
+}
+
+[data-visual-preset="nezha"] .nezha-node-title-link {
+  flex: 1 1 auto;
+}
+
+[data-visual-preset="nezha"] .nezha-node-title-link > div {
+  min-width: 0;
+}
+
+[data-visual-preset="nezha"] .nezha-node-name {
+  min-width: 0;
+  color: var(--nezha-text);
+  font-size: 0.95rem;
+}
+
+[data-visual-preset="nezha"] .nezha-offline-label {
+  color: var(--nezha-crimson);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+[data-visual-preset="nezha"] .nezha-node-info {
+  flex: 0 0 auto;
+  padding: 0.2rem;
+  color: var(--nezha-secondary);
+  transition: color 120ms ease, transform 120ms ease;
+}
+
+[data-visual-preset="nezha"] .nezha-node-info:hover {
+  color: var(--nezha-blue);
+  transform: translateY(-1px);
+}
+
+[data-visual-preset="nezha"] .nezha-node-card-content {
+  padding: 0.75rem 0.85rem 0.85rem;
+  font-size: 0.79rem;
+}
+
+[data-visual-preset="nezha"] .nezha-node-card-content > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0.58rem;
+}
+
+[data-visual-preset="nezha"] .nezha-node-tags:empty {
+  display: none;
+}
+
+[data-visual-preset="nezha"] .nezha-node-divider {
+  border-color: var(--nezha-border);
+}
+
+[data-visual-preset="nezha"] .nezha-hardware-row {
+  min-height: 2rem;
+  padding: 0.35rem 0.45rem;
+  border-radius: 0.22rem;
+  background: rgba(10, 148, 242, 0.055);
+  color: var(--nezha-secondary);
+  font-size: 0.73rem;
+}
+
+[data-visual-preset="nezha"] .nezha-meta-row {
+  min-height: 1.1rem;
+  color: var(--nezha-secondary);
+  line-height: 1.35;
+}
+
 [data-visual-preset="nezha"] .purcarte-progress {
-  border-radius: 50rem;
+  border-radius: 999px;
+  background: rgba(34, 36, 38, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(34, 36, 38, 0.04);
 }
 
 [data-visual-preset="nezha"] .purcarte-progress-fill {
-  border-radius: 15px;
+  border-radius: 999px;
+  background-image: none;
 }
 
 [data-visual-preset="nezha"]
   .purcarte-progress[data-level="normal"]
   .purcarte-progress-fill {
-  background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
+  background-color: var(--nezha-blue);
+  background-image: none;
 }
 
 [data-visual-preset="nezha"]
   .purcarte-progress[data-level="warning"]
   .purcarte-progress-fill {
-  background-image: linear-gradient(to right, #fa709a 0%, #fee140 100%);
+  background-color: var(--nezha-orange);
+  background-image: none;
 }
 
 [data-visual-preset="nezha"]
   .purcarte-progress[data-level="error"]
   .purcarte-progress-fill {
-  background-image: linear-gradient(to top, #ff0844 0%, #ffb199 100%);
+  background-color: var(--nezha-crimson);
+  background-image: none;
 }
 
 [data-visual-preset="nezha"]
   .purcarte-progress[data-level="offline"]
   .purcarte-progress-fill {
-  background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
+  background-color: var(--nezha-offline);
+  background-image: none;
 }
 
 [data-visual-preset="nezha"] .purcarte-progress[data-level="offline"] {
-  background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
-}
+  background: rgba(112, 128, 144, 0.22);
 }
 
+@media (max-width: 640px) {
+  [data-visual-preset="nezha"] .nezha-group-content {
+    padding: 0.6rem;
+  }
+
+  [data-visual-preset="nezha"] .nezha-node-grid {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+}
 .striped-bg-red-translucent-diagonal {
   background-image: linear-gradient(
     45deg,
