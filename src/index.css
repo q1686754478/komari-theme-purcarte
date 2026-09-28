@@ -367,8 +367,7 @@
 
 [data-visual-preset="nezha"] .nezha-node-grid {
   width: 100%;
-  max-width: 1127px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: start;
   gap: 1.5em;
   font-size: 14px;
@@ -487,9 +486,9 @@
 [data-visual-preset="nezha"] .nezha-reference-name {
   min-width: 0;
   color: var(--nezha-text);
-  font-size: 1.15em;
+  font-size: 1.28571429em;
   font-weight: 700;
-  line-height: 1.25;
+  line-height: 1.2;
 }
 
 [data-visual-preset="nezha"] .nezha-reference-offline {
@@ -605,7 +604,6 @@
 
 [data-visual-preset="nezha"] .nezha-reference-row-label {
   color: var(--nezha-secondary);
-  font-size: 0.93em;
   font-weight: 500;
   letter-spacing: 0.01em;
   white-space: nowrap;
@@ -713,7 +711,6 @@
 [data-visual-preset="nezha"] .nezha-reference-hardware > span {
   flex: 0 0 auto;
   gap: 0.2em;
-  font-size: 0.93em;
 }
 
 [data-visual-preset="nezha"] .nezha-reference-traffic svg {
