@@ -61,10 +61,12 @@ const NezhaProgressRow = ({
           className="nezha-reference-progress-fill"
           style={{ width: `${clampedValue}%` }}
         />
+        <span
+          className="nezha-reference-progress-value"
+          style={{ left: `clamp(2em, calc(${clampedValue}% - 0.25em), calc(100% - 0.5em))` }}>
+          {displayValue ?? `${clampedValue.toFixed(0)}%`}
+        </span>
       </div>
-      <span className="nezha-reference-progress-value">
-        {displayValue ?? `${clampedValue.toFixed(0)}%`}
-      </span>
     </div>
   );
 };
@@ -195,7 +197,7 @@ export const NodeGrid = ({
 
           <div className="nezha-reference-detail-row">
             <span className="nezha-reference-row-label">网速</span>
-            <div className="nezha-reference-detail-value">
+            <div className="nezha-reference-detail-value nezha-reference-transfer-values">
               <span className="nezha-reference-download">
                 <FaRegArrowAltCircleDown />
                 {stats && isOnline
@@ -213,7 +215,7 @@ export const NodeGrid = ({
 
           <div className="nezha-reference-detail-row">
             <span className="nezha-reference-row-label">{t("node.traffic")}</span>
-            <div className="nezha-reference-detail-value">
+            <div className="nezha-reference-detail-value nezha-reference-transfer-values">
               <span className="nezha-reference-traffic">
                 <FaArrowCircleDown />
                 {stats && isOnline
