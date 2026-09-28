@@ -8,15 +8,20 @@ import {
 import type { NodeData } from "@/types/node";
 import { Link } from "react-router-dom";
 import {
-  Activity,
-  ArrowDownCircle,
-  ArrowUpCircle,
-  Clock3,
   CpuIcon,
   MemoryStickIcon,
   HardDriveIcon,
   Info,
 } from "lucide-react";
+import {
+  FaArrowCircleDown,
+  FaArrowCircleUp,
+  FaClock,
+  FaInfoCircle,
+  FaRegArrowAltCircleDown,
+  FaRegArrowAltCircleUp,
+} from "react-icons/fa";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import Flag from "./Flag";
 import { Tag } from "../ui/tag";
 import { useNodeCommons } from "@/hooks/useNodeCommons";
@@ -127,7 +132,7 @@ export const NodeGrid = ({
           <Link
             to={`/instance/${node.uuid}`}
             className="nezha-reference-title-link min-w-0">
-            <div className="flex min-w-0 items-center gap-3">
+            <div className="nezha-reference-title-content flex min-w-0 items-center">
               <Flag flag={node.region} />
               <img
                 src={getOSImage(node.os)}
@@ -138,7 +143,7 @@ export const NodeGrid = ({
               <CardTitle className="nezha-reference-name truncate">
                 {node.name}
                 {!isOnline && (
-                  <span className="nezha-reference-offline"> [Offline]</span>
+                  <span className="nezha-reference-offline">[已离线]</span>
                 )}
               </CardTitle>
             </div>
@@ -148,7 +153,7 @@ export const NodeGrid = ({
               className="nezha-reference-info"
               onClick={onShowDetails}
               aria-label={t("node.details", { name: node.name })}>
-              <Info />
+              <FaInfoCircle />
             </button>
             <div className="nezha-reference-popup" role="tooltip">
               <div>
@@ -178,18 +183,18 @@ export const NodeGrid = ({
         <CardContent className="nezha-reference-card-content">
           <div className="nezha-reference-divider" />
           <NezhaProgressRow
-            label={t("node.cpu")}
+            label="CPU"
             value={cpuUsage}
             offline={!isOnline}
           />
           <NezhaProgressRow
-            label={t("node.mem")}
+            label="内存"
             value={memUsage}
             offline={!isOnline}
           />
           {enableSwap && (
             <NezhaProgressRow
-              label={t("node.swap")}
+              label="交换"
               value={swapUsage}
               offline={!isOnline}
               displayValue={
@@ -198,7 +203,7 @@ export const NodeGrid = ({
             />
           )}
           <NezhaProgressRow
-            label={t("node.disk")}
+            label="硬盘"
             value={diskUsage}
             offline={!isOnline}
           />
@@ -207,13 +212,13 @@ export const NodeGrid = ({
             <span className="nezha-reference-row-label">网速</span>
             <div className="nezha-reference-detail-value">
               <span className="nezha-reference-download">
-                <ArrowDownCircle />
+                <FaRegArrowAltCircleDown />
                 {stats && isOnline
                   ? formatBytes(stats.net_in, true)
                   : t("node.notAvailable")}
               </span>
               <span className="nezha-reference-upload">
-                <ArrowUpCircle />
+                <FaRegArrowAltCircleUp />
                 {stats && isOnline
                   ? formatBytes(stats.net_out, true)
                   : t("node.notAvailable")}
@@ -224,14 +229,14 @@ export const NodeGrid = ({
           <div className="nezha-reference-detail-row">
             <span className="nezha-reference-row-label">{t("node.traffic")}</span>
             <div className="nezha-reference-detail-value">
-              <span>
-                <ArrowDownCircle />
+              <span className="nezha-reference-traffic">
+                <FaArrowCircleDown />
                 {stats && isOnline
                   ? formatBytes(stats.net_total_down)
                   : t("node.notAvailable")}
               </span>
-              <span>
-                <ArrowUpCircle />
+              <span className="nezha-reference-traffic">
+                <FaArrowCircleUp />
                 {stats && isOnline
                   ? formatBytes(stats.net_total_up)
                   : t("node.notAvailable")}
@@ -243,32 +248,32 @@ export const NodeGrid = ({
             <span className="nezha-reference-row-label">信息</span>
             <div className="nezha-reference-detail-value nezha-reference-hardware">
               <span>
-                <CpuIcon />
+                <i aria-hidden="true" className="bi bi-cpu-fill" />
                 {node.cpu_cores} {t("node.cores")}
               </span>
               <span>
-                <MemoryStickIcon />
+                <i aria-hidden="true" className="bi bi-memory" />
                 {formatBytes(node.mem_total)}
               </span>
               <span>
-                <HardDriveIcon />
+                <i aria-hidden="true" className="bi bi-hdd" />
                 {formatBytes(node.disk_total)}
               </span>
             </div>
           </div>
 
           <div className="nezha-reference-detail-row">
-            <span className="nezha-reference-row-label">{t("node.load")}</span>
+            <span className="nezha-reference-row-label">负载</span>
             <div className="nezha-reference-detail-value nezha-reference-load">
-              <Activity />
+              <i aria-hidden="true" className="bi bi-activity" />
               <span>{load}</span>
             </div>
           </div>
 
           <div className="nezha-reference-detail-row">
-            <span className="nezha-reference-row-label">{t("node.uptime")}</span>
+            <span className="nezha-reference-row-label">在线</span>
             <div className="nezha-reference-detail-value">
-              <Clock3 className="nezha-reference-clock" />
+              <FaClock className="nezha-reference-clock" />
               <span>
                 {isOnline && stats
                   ? formatUptime(stats.uptime)
