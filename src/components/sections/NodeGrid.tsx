@@ -7,7 +7,16 @@ import {
 } from "@/utils";
 import type { NodeData } from "@/types/node";
 import { Link } from "react-router-dom";
-import { CpuIcon, MemoryStickIcon, HardDriveIcon, Info } from "lucide-react";
+import {
+  Activity,
+  ArrowDownCircle,
+  ArrowUpCircle,
+  Clock3,
+  CpuIcon,
+  MemoryStickIcon,
+  HardDriveIcon,
+  Info,
+} from "lucide-react";
 import Flag from "./Flag";
 import { Tag } from "../ui/tag";
 import { useNodeCommons } from "@/hooks/useNodeCommons";
@@ -16,6 +25,42 @@ import { CircleProgress } from "../ui/progress-circle";
 import { useAppConfig } from "@/config";
 import { useLocale } from "@/config/hooks";
 import { NodeDisplayContainer } from "./NodeDisplay";
+
+interface NezhaProgressRowProps {
+  label: string;
+  value: number;
+  offline: boolean;
+  displayValue?: string;
+}
+
+const NezhaProgressRow = ({
+  label,
+  value,
+  offline,
+  displayValue,
+}: NezhaProgressRowProps) => {
+  const clampedValue = Math.max(0, Math.min(100, value));
+  const level = offline
+    ? "offline"
+    : clampedValue < 51
+    ? "normal"
+    : clampedValue < 81
+    ? "warning"
+    : "error";
+
+  return (
+    <div className="nezha-reference-progress-row">
+      <span className="nezha-reference-row-label">{label}</span>
+      <div className="nezha-reference-progress" data-level={level}>
+        <div
+          className="nezha-reference-progress-fill"
+          style={{ width: `max(${clampedValue}%, 1.8em)` }}>
+          <span>{displayValue ?? `${clampedValue.toFixed(0)}%`}</span>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 interface NodeGridContainerProps {
   nodes: NodeData[];
@@ -68,8 +113,173 @@ export const NodeGrid = ({
     expired_at,
     trafficPercentage,
   } = useNodeCommons(node);
-  const { isShowHWBarInCard, isShowValueUnderProgressBar } = useAppConfig();
+  const { visualPreset, isShowHWBarInCard, isShowValueUnderProgressBar } =
+    useAppConfig();
   const { t } = useLocale();
+
+  if (visualPreset === "nezha") {
+    return (
+      <Card
+        surface="card"
+        data-online={isOnline ? "true" : "false"}
+        className="nezha-reference-card flex w-full flex-col">
+        <CardHeader className="nezha-reference-card-header flex flex-row items-center justify-between space-y-0">
+          <Link
+            to={`/instance/${node.uuid}`}
+            className="nezha-reference-title-link min-w-0">
+            <div className="flex min-w-0 items-center gap-3">
+              <Flag flag={node.region} />
+              <img
+                src={getOSImage(node.os)}
+                alt={node.os}
+                className="nezha-reference-os-icon object-contain"
+                loading="lazy"
+              />
+              <CardTitle className="nezha-reference-name truncate">
+                {node.name}
+                {!isOnline && (
+                  <span className="nezha-reference-offline"> [Offline]</span>
+                )}
+              </CardTitle>
+            </div>
+          </Link>
+          <div className="nezha-reference-info-wrap">
+            <button
+              className="nezha-reference-info"
+              onClick={onShowDetails}
+              aria-label={t("node.details", { name: node.name })}>
+              <Info />
+            </button>
+            <div className="nezha-reference-popup" role="tooltip">
+              <div>
+                系统: {node.os} [{node.virtualization || "-"}:{node.arch}]
+              </div>
+              <div>CPU: {node.cpu_name || t("node.notAvailable")}</div>
+              <div>
+                硬盘: {stats ? formatBytes(stats.disk) : "0 B"} / {formatBytes(node.disk_total)}
+              </div>
+              <div>
+                内存: {stats ? formatBytes(stats.ram) : "0 B"} / {formatBytes(node.mem_total)}
+              </div>
+              <div>
+                交换: {stats ? formatBytes(stats.swap) : "0 B"} / {formatBytes(node.swap_total)}
+              </div>
+              <div>
+                流量: ↓ {stats ? formatBytes(stats.net_total_down) : "0 B"} ↑ {stats ? formatBytes(stats.net_total_up) : "0 B"}
+              </div>
+              <div>负载: {load}</div>
+              <div>
+                在线: {isOnline && stats ? formatUptime(stats.uptime) : t("node.offline")}
+              </div>
+            </div>
+          </div>
+        </CardHeader>
+
+        <CardContent className="nezha-reference-card-content">
+          <div className="nezha-reference-divider" />
+          <NezhaProgressRow
+            label={t("node.cpu")}
+            value={cpuUsage}
+            offline={!isOnline}
+          />
+          <NezhaProgressRow
+            label={t("node.mem")}
+            value={memUsage}
+            offline={!isOnline}
+          />
+          {enableSwap && (
+            <NezhaProgressRow
+              label={t("node.swap")}
+              value={swapUsage}
+              offline={!isOnline}
+              displayValue={
+                node.swap_total > 0 ? `${swapUsage.toFixed(0)}%` : "OFF"
+              }
+            />
+          )}
+          <NezhaProgressRow
+            label={t("node.disk")}
+            value={diskUsage}
+            offline={!isOnline}
+          />
+
+          <div className="nezha-reference-detail-row">
+            <span className="nezha-reference-row-label">网速</span>
+            <div className="nezha-reference-detail-value">
+              <span className="nezha-reference-download">
+                <ArrowDownCircle />
+                {stats && isOnline
+                  ? formatBytes(stats.net_in, true)
+                  : t("node.notAvailable")}
+              </span>
+              <span className="nezha-reference-upload">
+                <ArrowUpCircle />
+                {stats && isOnline
+                  ? formatBytes(stats.net_out, true)
+                  : t("node.notAvailable")}
+              </span>
+            </div>
+          </div>
+
+          <div className="nezha-reference-detail-row">
+            <span className="nezha-reference-row-label">{t("node.traffic")}</span>
+            <div className="nezha-reference-detail-value">
+              <span>
+                <ArrowDownCircle />
+                {stats && isOnline
+                  ? formatBytes(stats.net_total_down)
+                  : t("node.notAvailable")}
+              </span>
+              <span>
+                <ArrowUpCircle />
+                {stats && isOnline
+                  ? formatBytes(stats.net_total_up)
+                  : t("node.notAvailable")}
+              </span>
+            </div>
+          </div>
+
+          <div className="nezha-reference-detail-row">
+            <span className="nezha-reference-row-label">信息</span>
+            <div className="nezha-reference-detail-value nezha-reference-hardware">
+              <span>
+                <CpuIcon />
+                {node.cpu_cores} {t("node.cores")}
+              </span>
+              <span>
+                <MemoryStickIcon />
+                {formatBytes(node.mem_total)}
+              </span>
+              <span>
+                <HardDriveIcon />
+                {formatBytes(node.disk_total)}
+              </span>
+            </div>
+          </div>
+
+          <div className="nezha-reference-detail-row">
+            <span className="nezha-reference-row-label">{t("node.load")}</span>
+            <div className="nezha-reference-detail-value nezha-reference-load">
+              <Activity />
+              <span>{load}</span>
+            </div>
+          </div>
+
+          <div className="nezha-reference-detail-row">
+            <span className="nezha-reference-row-label">{t("node.uptime")}</span>
+            <div className="nezha-reference-detail-value">
+              <Clock3 className="nezha-reference-clock" />
+              <span>
+                {isOnline && stats
+                  ? formatUptime(stats.uptime)
+                  : t("node.offline")}
+              </span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card
