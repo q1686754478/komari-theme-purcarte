@@ -21,14 +21,21 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: "npm"
+          node-version: "24.22.1"
+          cache: "yarn"
+          cache-dependency-path: yarn.lock
 
       - name: Install Yarn
-        run: npm install -g yarn
+        run: npm install -g yarn@1.22.22 --ignore-scripts
 
       - name: Install dependencies
-        run: yarn
+        run: yarn install --frozen-lockfile --ignore-scripts --non-interactive --registry https://registry.npmjs.org
+
+      - name: Test project
+        run: yarn lint && yarn test
+
+      - name: Check dependencies
+        run: yarn audit --registry https://registry.npmjs.org
 
       - name: Build project
         run: yarn build

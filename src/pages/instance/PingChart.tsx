@@ -29,6 +29,7 @@ import { CustomTooltip } from "@/components/ui/tooltip";
 import Tips from "@/components/ui/tips";
 import { generateColor, lableFormatter } from "@/utils/chartHelper";
 import { useLocale } from "@/config/hooks";
+import { LocaleHtml } from "@/components/ui/locale-html";
 
 interface PingChartProps {
   node: NodeData;
@@ -270,10 +271,7 @@ const PingChart = memo(({ node, hours }: PingChartProps) => {
         <Card surface="card" className="relative">
           <div className="absolute top-2 right-2">
             <Tips>
-              <span
-                dangerouslySetInnerHTML={{
-                  __html: t("chart.packetLossCalculationWarning"),
-                }}></span>
+              <LocaleHtml html={t("chart.packetLossCalculationWarning")} />
             </Tips>
           </div>
           <CardContent className="p-2">
@@ -324,11 +322,7 @@ const PingChart = memo(({ node, hours }: PingChartProps) => {
                 />
                 <Label htmlFor="peak-shaving">{t("chart.smooth")}</Label>
                 <Tips className="nezha-chart-tip" size="18" color="currentColor">
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: t("chart.smoothTooltipContent"),
-                    }}
-                  />
+                  <LocaleHtml html={t("chart.smoothTooltipContent")} />
                 </Tips>
               </div>
               <div className="flex items-center space-x-2">
@@ -341,11 +335,7 @@ const PingChart = memo(({ node, hours }: PingChartProps) => {
                   {t("chart.connectBreaks")}
                 </Label>
                 <Tips className="nezha-chart-tip" size="18" color="currentColor">
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: t("chart.connectBreaksTooltipContent"),
-                    }}
-                  />
+                  <LocaleHtml html={t("chart.connectBreaksTooltipContent")} />
                 </Tips>
               </div>
             </div>

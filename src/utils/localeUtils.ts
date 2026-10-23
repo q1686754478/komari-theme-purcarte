@@ -13,7 +13,7 @@ export const parseCustomTexts = (
     return {};
   }
 
-  const result: Record<string, string> = {};
+  const result: Record<string, string> = Object.create(null);
   const pairs = customTexts.split(",");
 
   for (const pair of pairs) {
@@ -23,11 +23,11 @@ export const parseCustomTexts = (
     const key = pair.substring(0, separatorIndex).trim();
     const value = pair.substring(separatorIndex + 1).trim();
 
-    if (key) {
+    if (key && isSafeTextPath(key)) {
       try {
         result[key] = decodeURIComponent(value);
       } catch (e) {
-        console.error(`无法解码自定义文本值: ${value}`, e);
+        console.error("无法解码自定义文本值", e);
         result[key] = value; // 回退到原始值
       }
     }
@@ -35,6 +35,11 @@ export const parseCustomTexts = (
 
   return result;
 };
+
+const isSafeTextPath = (key: string): boolean =>
+  key.split(".").every((part) =>
+    part.length > 0 && !["__proto__", "prototype", "constructor"].includes(part)
+  );
 
 /**
  * 将自定义文本记录序列化为 URL 编码的字符串。
@@ -61,10 +66,10 @@ export const flattenObject = (
   parentKey = "",
   separator = "."
 ): Record<string, string> => {
-  const result: Record<string, string> = {};
+  const result: Record<string, string> = Object.create(null);
 
   for (const key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+    if (Object.prototype.hasOwnProperty.call(obj, key) && isSafeTextPath(key)) {
       const newKey = parentKey ? `${parentKey}${separator}${key}` : key;
       if (
         typeof obj[key] === "object" &&
@@ -95,12 +100,13 @@ export const mergeTexts = (defaultTexts: any, customTexts: string): any => {
   for (const key in parsedCustomTexts) {
     if (
       Object.prototype.hasOwnProperty.call(parsedCustomTexts, key) &&
+      Object.prototype.hasOwnProperty.call(flatDefault, key) &&
       flatDefault[key] !== parsedCustomTexts[key]
     ) {
       const keys = key.split(".");
       let current = merged;
       for (let i = 0; i < keys.length - 1; i++) {
-        current = current[keys[i]] = current[keys[i]] || {};
+        current = current[keys[i]];
       }
       current[keys[keys.length - 1]] = parsedCustomTexts[key];
     }
@@ -124,7 +130,8 @@ export const getModifiedKeys = (
   const modifiedKeys: string[] = [];
 
   for (const key in parsedCustomTexts) {
-    if (Object.prototype.hasOwnProperty.call(parsedCustomTexts, key)) {
+    if (Object.prototype.hasOwnProperty.call(parsedCustomTexts, key) &&
+        Object.prototype.hasOwnProperty.call(flatDefault, key)) {
       if (flatDefault[key] !== parsedCustomTexts[key]) {
         modifiedKeys.push(key);
       }
@@ -156,10 +163,10 @@ export const deepMerge = <T extends object, S extends object>(
   const output = { ...target } as T & S;
 
   if (isObject(target) && isObject(source)) {
-    Object.keys(source).forEach((key) => {
+    Object.keys(source).filter(isSafeTextPath).forEach((key) => {
       const sourceKey = key as keyof S;
       if (isObject(source[sourceKey])) {
-        if (!(key in target)) {
+        if (!Object.prototype.hasOwnProperty.call(target, key)) {
           Object.assign(output, { [key]: source[sourceKey] });
         } else {
           (output as any)[key] = deepMerge(

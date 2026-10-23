@@ -20,6 +20,12 @@
 1.  前往 [Releases](https://github.com/Montia37/komari-theme-purcarte/releases) 页面下载最新的 `komari-theme-purcarte.zip` 文件。
 2.  进入 Komari 后台，上传 `zip` 压缩包并启用本主题。
 
+### 本地开发与安全边界
+
+使用 Node 24.22.1 或更新的 24.x 安全补丁、Yarn 1.22.22。先运行 `yarn install --frozen-lockfile --ignore-scripts --registry https://registry.npmjs.org`，再运行 `yarn test`、`yarn build`。`yarn dev` 默认只监听本机；需要局域网调试时显式使用 `yarn dev --host`，不要将开发服务作为生产站点。
+
+自定义文案只接受已有的默认文案叶子路径；未知路径及原型相关键会被忽略。图表提示只保留基础文字排版标签，不支持脚本、图片、链接、事件属性或自定义样式。
+
 ### 配置背景图片
 
 > 为获得最佳视觉效果，建议搭配背景图片使用
