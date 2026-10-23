@@ -1,0 +1,27 @@
+name: Validate theme
+
+on:
+  push:
+    branches: [main, "fix/**"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.22.1"
+          cache: yarn
+          cache-dependency-path: yarn.lock
+      - run: npm install -g yarn@1.22.22 --ignore-scripts
+      - run: yarn install --frozen-lockfile --ignore-scripts --non-interactive --registry https://registry.npmjs.org
+      - run: yarn lint
+      - run: yarn test
+      - run: yarn build
+      - run: yarn audit --registry https://registry.npmjs.org
+      - run: git diff --exit-code -- package.json yarn.lock
